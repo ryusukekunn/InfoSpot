@@ -1,2 +1,0 @@
-# InfoSpot
-info spot 
