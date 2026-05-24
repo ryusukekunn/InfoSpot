@@ -49,7 +49,7 @@
     }
     #lang-overlay::before{content:'';position:absolute;top:-120px;right:-80px;width:380px;height:380px;border-radius:50%;background:rgba(28,168,200,0.12);pointer-events:none}
     #lang-overlay::after{content:'';position:absolute;bottom:-100px;left:-60px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,0.04);pointer-events:none}
-    .lo-logo{width:160px;height:auto;margin-bottom:1.5rem;position:relative;z-index:1;filter:brightness(0) invert(1)}
+    .lo-logo{width:160px;height:auto;margin-bottom:1.5rem;position:relative;z-index:1;background:#fff;border-radius:12px;padding:10px 18px}
     .lo-sub{font-size:13px;color:rgba(255,255,255,0.5);text-align:center;margin-bottom:2.5rem;position:relative;z-index:1;line-height:1.7}
     .lang-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:380px;position:relative;z-index:1}
     .lang-btn{
@@ -89,7 +89,7 @@
     .hero::before{content:'';position:absolute;top:-80px;right:-80px;width:280px;height:280px;border-radius:50%;background:rgba(28,168,200,0.15)}
     .hero::after{content:'';position:absolute;bottom:-40px;left:15%;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.04)}
     .hero-inner{max-width:560px;margin:0 auto;position:relative;z-index:1}
-    .hero-logo{height:48px;width:auto;margin-bottom:1.25rem;filter:brightness(0) invert(1);display:block}
+    .hero-logo{height:44px;width:auto;margin-bottom:1.25rem;display:block;background:#fff;border-radius:10px;padding:7px 14px}
     .hero-eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--to-teal-mid);margin-bottom:8px;display:flex;align-items:center;gap:8px}
     .hero-eyebrow::before{content:'';display:inline-block;width:20px;height:1.5px;background:var(--to-teal-mid);opacity:0.7}
     .hero-title{font-size:clamp(26px,7vw,36px);font-weight:500;color:#fff;line-height:1.15;margin-bottom:5px}
@@ -464,7 +464,7 @@ const T={
     spa7:"Aquatherm tretman lica",spa8:"Power C & Eternal tretman",
     spaTip:"Masa\u017ee i tretmane potrebno je rezervisati unaprijed. Pozovite recepciju.",
     foodTitle:"Hrana & pi\u0107e",rest1:"\u00c0 la carte restoran 1",rest2:"\u00c0 la carte restoran 2",
-    breakfast:"Doru\u010dak (buffet)",poolBar:"Bazen bar",touristTax:"Boravi\u0161na taksa",perPersonNight:"osobi/no\u0107i",
+    breakfast:"Doru\u010dak (buffet)",poolBar:"Bazen bar",dinner:"Ve\u010dera",touristTax:"Boravi\u0161na taksa",perPersonNight:"osobi/no\u0107i",
     roomTitle:"Informacije o sobi & hotelu",
     towels:"Ru\u010dnici za bazen",towelsVal:"Ne iznositi iz sobe",
     ac:"Klima / grijanje",acVal:"Termostat u sobi",
@@ -507,7 +507,7 @@ const T={
     spa7:"Aquatherm tretman lica",spa8:"Power C & Eternal tretman",
     spaTip:"Masa\u017ee i tretmane potrebno je rezervisati unapred. Pozovite recepciju.",
     foodTitle:"Hrana & pi\u0107e",rest1:"\u00c0 la carte restoran 1",rest2:"\u00c0 la carte restoran 2",
-    breakfast:"Doru\u010dak (bife)",poolBar:"Bazen bar",touristTax:"Boravi\u0161na taksa",perPersonNight:"osobi/no\u0107i",
+    breakfast:"Doru\u010dak (bife)",poolBar:"Bazen bar",dinner:"Ve\u010dera",touristTax:"Boravi\u0161na taksa",perPersonNight:"osobi/no\u0107i",
     roomTitle:"Informacije o sobi & hotelu",
     towels:"Pe\u0161kiri za bazen",towelsVal:"Ne iznositi iz sobe",
     ac:"Klima / grejanje",acVal:"Termostat u sobi",
@@ -550,7 +550,7 @@ const T={
     spa7:"Aquatherm facial treatment",spa8:"Power C & Eternal treatment",
     spaTip:"Massages and treatments must be booked in advance. Please call reception.",
     foodTitle:"Food & drinks",rest1:"\u00c0 la carte restaurant 1",rest2:"\u00c0 la carte restaurant 2",
-    breakfast:"Breakfast (buffet)",poolBar:"Pool bar",touristTax:"Tourist tax",perPersonNight:"person/night",
+    breakfast:"Breakfast (buffet)",poolBar:"Pool bar",dinner:"Dinner",touristTax:"Tourist tax",perPersonNight:"person/night",
     roomTitle:"Room & hotel info",
     towels:"Pool towels",towelsVal:"Do not take out of room",
     ac:"A/C & heating",acVal:"Thermostat in room",
@@ -593,7 +593,7 @@ const T={
     spa7:"Aquatherm Gesichtsbehandlung",spa8:"Power C & Eternal Behandlung",
     spaTip:"Bitte Massagen und Behandlungen im Voraus reservieren. Rezeption kontaktieren.",
     foodTitle:"Essen & Trinken",rest1:"\u00c0-la-carte-Restaurant 1",rest2:"\u00c0-la-carte-Restaurant 2",
-    breakfast:"Fr\u00fchst\u00fcck (Buffet)",poolBar:"Pool-Bar",touristTax:"Kurtaxe",perPersonNight:"Person/Nacht",
+    breakfast:"Fr\u00fchst\u00fcck (Buffet)",poolBar:"Pool-Bar",dinner:"Abendessen",touristTax:"Kurtaxe",perPersonNight:"Person/Nacht",
     roomTitle:"Zimmer & Hotel",
     towels:"Badehandt\u00fccher",towelsVal:"Nicht aus dem Zimmer",
     ac:"Klima / Heizung",acVal:"Thermostat im Zimmer",
