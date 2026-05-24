@@ -1,239 +1,241 @@
 <!DOCTYPE html>
 <html lang="bs">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Terme Ozren — Info kartica</title>
-  <meta name="description" content="Digitalna info kartica za goste Terme Ozren." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Mono&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.x/dist/tabler-icons.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Mono&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.x/dist/tabler-icons.min.css"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --green-dark:#085041; --green-mid:#0F6E56; --green:#1D9E75; --green-light:#9FE1CB; --green-pale:#E1F5EE;
-      --bg:#F5F4EF; --surface:#FFFFFF; --surface2:#F0EFEA;
-      --border:rgba(0,0,0,0.10); --border-med:rgba(0,0,0,0.18);
-      --text:#1A1A18; --text-muted:#6B6B64; --text-faint:#9B9B93;
-      --radius:14px; --radius-sm:9px;
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      /* Terme Ozren brand */
+      --to-navy:#1A2B5E;
+      --to-blue:#1B4E8A;
+      --to-teal:#1CA8C8;
+      --to-teal-light:#E0F6FB;
+      --to-teal-mid:#9FD9E8;
+      /* neutrals */
+      --bg:#F4F5F7;
+      --surface:#FFFFFF;
+      --surface2:#EEF0F4;
+      --border:rgba(0,0,0,0.09);
+      --border-med:rgba(0,0,0,0.18);
+      --text:#1A1C22;
+      --text-muted:#5F6578;
+      --text-faint:#9AA0B4;
+      --radius:14px;
+      --radius-sm:9px;
     }
-    @media (prefers-color-scheme:dark) {
-      :root {
-        --bg:#111210; --surface:#1C1D1B; --surface2:#252623;
-        --border:rgba(255,255,255,0.09); --border-med:rgba(255,255,255,0.16);
-        --text:#E8E7E1; --text-muted:#8A8A83; --text-faint:#5A5A55; --green-pale:#0D2E24;
+    @media(prefers-color-scheme:dark){
+      :root{
+        --bg:#0E1014;--surface:#181A20;--surface2:#21242C;
+        --border:rgba(255,255,255,0.08);--border-med:rgba(255,255,255,0.16);
+        --text:#E6E8EF;--text-muted:#828AA0;--text-faint:#4E5468;
+        --to-teal-light:#0A2530;
       }
     }
-    html { scroll-behavior:smooth; }
-    body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; padding:0 0 3rem; }
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:0 0 3rem}
 
-    /* LANGUAGE OVERLAY */
-    #lang-overlay {
-      position:fixed; inset:0; z-index:9999;
-      background:var(--green-dark);
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      padding:2rem 1.5rem; overflow:hidden;
+    /* ── LANG OVERLAY ── */
+    #lang-overlay{
+      position:fixed;inset:0;z-index:9999;
+      background:linear-gradient(160deg,var(--to-navy) 0%,var(--to-blue) 55%,#1590B0 100%);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      padding:2rem 1.5rem;overflow:hidden;
     }
-    #lang-overlay::before {
-      content:''; position:absolute; top:-100px; right:-100px;
-      width:350px; height:350px; border-radius:50%;
-      background:rgba(255,255,255,0.04); pointer-events:none;
+    #lang-overlay::before{content:'';position:absolute;top:-120px;right:-80px;width:380px;height:380px;border-radius:50%;background:rgba(28,168,200,0.12);pointer-events:none}
+    #lang-overlay::after{content:'';position:absolute;bottom:-100px;left:-60px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,0.04);pointer-events:none}
+    .lo-logo{width:160px;height:auto;margin-bottom:1.5rem;position:relative;z-index:1;filter:brightness(0) invert(1)}
+    .lo-sub{font-size:13px;color:rgba(255,255,255,0.5);text-align:center;margin-bottom:2.5rem;position:relative;z-index:1;line-height:1.7}
+    .lang-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:380px;position:relative;z-index:1}
+    .lang-btn{
+      background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.18);
+      border-radius:var(--radius);padding:1rem;cursor:pointer;
+      display:flex;flex-direction:column;align-items:center;gap:7px;
+      transition:background 0.18s,border-color 0.18s,transform 0.15s;
+      -webkit-tap-highlight-color:transparent;font-family:'DM Sans',sans-serif;
     }
-    #lang-overlay::after {
-      content:''; position:absolute; bottom:-80px; left:-60px;
-      width:260px; height:260px; border-radius:50%;
-      background:rgba(255,255,255,0.03); pointer-events:none;
+    .lang-btn:hover{background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.35);transform:translateY(-2px)}
+    .lang-btn:active{transform:translateY(0)}
+    .lang-flag{font-size:28px;line-height:1}
+    .lang-name{font-size:14px;font-weight:500;color:#fff}
+    #lang-overlay.fade-out{animation:fadeOut 0.38s ease forwards}
+    @keyframes fadeOut{to{opacity:0;pointer-events:none}}
+
+    /* ── LANG SWITCHER ── */
+    #lang-switcher{
+      position:fixed;top:12px;right:12px;z-index:200;
+      background:rgba(26,43,94,0.88);backdrop-filter:blur(8px);
+      border:1px solid rgba(255,255,255,0.18);border-radius:99px;
+      padding:5px 12px;display:none;align-items:center;gap:6px;
+      cursor:pointer;font-size:13px;color:rgba(255,255,255,0.9);
+      font-family:'DM Sans',sans-serif;transition:background 0.15s;
     }
-    .lo-wave { font-size:52px; color:var(--green-light); margin-bottom:1.25rem; position:relative; z-index:1; }
-    .lo-title { font-size:clamp(22px,6vw,32px); font-weight:500; color:#fff; text-align:center; margin-bottom:6px; position:relative; z-index:1; }
-    .lo-sub   { font-size:13px; color:rgba(255,255,255,0.45); text-align:center; margin-bottom:2.5rem; position:relative; z-index:1; line-height:1.6; }
-    .lang-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; width:100%; max-width:380px; position:relative; z-index:1; }
-    .lang-btn {
-      background:rgba(255,255,255,0.09); border:1px solid rgba(255,255,255,0.14);
-      border-radius:var(--radius); padding:1.1rem 1rem; cursor:pointer;
-      display:flex; flex-direction:column; align-items:center; gap:8px;
-      transition:background 0.18s, border-color 0.18s, transform 0.15s;
-      -webkit-tap-highlight-color:transparent; color:#fff; font-family:'DM Sans',sans-serif;
+    #lang-switcher:hover{background:rgba(26,43,94,1)}
+
+    /* ── APP ── */
+    #app{display:none}
+    #app.visible{display:block}
+
+    /* ── HERO ── */
+    .hero{
+      background:linear-gradient(135deg,var(--to-navy) 0%,var(--to-blue) 60%,#1590B0 100%);
+      padding:2rem 1.25rem 2rem;position:relative;overflow:hidden;
     }
-    .lang-btn:hover  { background:rgba(255,255,255,0.18); border-color:rgba(255,255,255,0.3); transform:translateY(-2px); }
-    .lang-btn:active { transform:translateY(0); }
-    .lang-flag   { font-size:32px; line-height:1; }
-    .lang-name   { font-size:15px; font-weight:500; color:#fff; }
-    .lang-native { font-size:12px; color:rgba(255,255,255,0.5); }
-    #lang-overlay.fade-out { animation:fadeOut 0.38s ease forwards; }
-    @keyframes fadeOut { to { opacity:0; pointer-events:none; } }
+    .hero::before{content:'';position:absolute;top:-80px;right:-80px;width:280px;height:280px;border-radius:50%;background:rgba(28,168,200,0.15)}
+    .hero::after{content:'';position:absolute;bottom:-40px;left:15%;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.04)}
+    .hero-inner{max-width:560px;margin:0 auto;position:relative;z-index:1}
+    .hero-logo{height:48px;width:auto;margin-bottom:1.25rem;filter:brightness(0) invert(1);display:block}
+    .hero-eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--to-teal-mid);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+    .hero-eyebrow::before{content:'';display:inline-block;width:20px;height:1.5px;background:var(--to-teal-mid);opacity:0.7}
+    .hero-title{font-size:clamp(26px,7vw,36px);font-weight:500;color:#fff;line-height:1.15;margin-bottom:5px}
+    .hero-sub{font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:1.25rem}
+    .hero-badges{display:flex;flex-wrap:wrap;gap:7px}
+    .badge{background:rgba(255,255,255,0.10);color:rgba(255,255,255,0.88);font-size:12px;padding:5px 12px;border-radius:99px;display:flex;align-items:center;gap:5px;border:1px solid rgba(255,255,255,0.12)}
 
-    /* LANG SWITCHER */
-    #lang-switcher {
-      position:fixed; top:12px; right:12px; z-index:200;
-      background:rgba(8,80,65,0.88); backdrop-filter:blur(8px);
-      border:1px solid rgba(255,255,255,0.16); border-radius:99px;
-      padding:5px 12px; display:none; align-items:center; gap:6px;
-      cursor:pointer; font-size:13px; color:rgba(255,255,255,0.85);
-      font-family:'DM Sans',sans-serif; transition:background 0.15s;
-    }
-    #lang-switcher:hover { background:rgba(8,80,65,1); }
+    /* ── STATS ── */
+    .stats{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface);border-bottom:1px solid var(--border)}
+    .stat{padding:1rem 0.6rem;text-align:center;border-right:1px solid var(--border)}
+    .stat:last-child{border-right:none}
+    .stat i{font-size:19px;color:var(--to-teal);margin-bottom:4px;display:block}
+    .stat-label{font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);margin-bottom:2px}
+    .stat-val{font-size:13px;font-weight:500;color:var(--text)}
 
-    /* APP */
-    #app { display:none; }
-    #app.visible { display:block; }
+    /* ── CONTENT ── */
+    .content{max-width:560px;margin:0 auto;padding:1rem 1rem 0}
 
-    /* HERO */
-    .hero { background:var(--green-dark); padding:2.5rem 1.25rem 2rem; position:relative; overflow:hidden; }
-    .hero::before { content:''; position:absolute; top:-80px; right:-80px; width:280px; height:280px; border-radius:50%; background:rgba(255,255,255,0.04); }
-    .hero::after  { content:''; position:absolute; bottom:-40px; left:20%; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.03); }
-    .hero-inner    { max-width:560px; margin:0 auto; position:relative; z-index:1; }
-    .hero-eyebrow  { font-size:11px; text-transform:uppercase; letter-spacing:2px; color:var(--green-light); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
-    .hero-eyebrow::before { content:''; display:inline-block; width:20px; height:1.5px; background:var(--green-light); opacity:0.6; }
-    .hero-title  { font-size:clamp(28px,7vw,38px); font-weight:500; color:#fff; line-height:1.15; margin-bottom:6px; }
-    .hero-sub    { font-size:14px; color:rgba(255,255,255,0.5); margin-bottom:1.5rem; }
-    .hero-badges { display:flex; flex-wrap:wrap; gap:7px; }
-    .badge { background:rgba(255,255,255,0.10); color:rgba(255,255,255,0.85); font-size:12px; padding:5px 12px; border-radius:99px; display:flex; align-items:center; gap:5px; border:1px solid rgba(255,255,255,0.08); }
+    /* ── WIFI ── */
+    .wifi-box{background:var(--to-teal-light);border-radius:var(--radius);padding:1rem 1.25rem;display:flex;align-items:center;gap:14px;margin-bottom:10px;border:1px solid rgba(28,168,200,0.25)}
+    .wifi-icon{font-size:26px;color:var(--to-teal);flex-shrink:0}
+    .wifi-data{flex:1}
+    .wifi-name{font-size:15px;font-weight:500;color:var(--to-navy)}
+    @media(prefers-color-scheme:dark){.wifi-name{color:var(--to-teal-mid)}}
+    .wifi-pass{font-size:14px;color:var(--to-teal);font-family:'DM Mono',monospace;letter-spacing:0.5px;margin-top:2px}
+    .wifi-copy{background:var(--surface);border:1px solid rgba(28,168,200,0.35);color:var(--to-teal);font-size:12px;font-family:'DM Sans',sans-serif;padding:6px 13px;border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:5px;transition:background 0.15s}
+    .wifi-copy:hover{background:var(--to-teal-light)}
 
-    /* STATS */
-    .stats { max-width:560px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); background:var(--surface); border-bottom:1px solid var(--border); }
-    .stat { padding:1rem 0.75rem; text-align:center; border-right:1px solid var(--border); }
-    .stat:last-child { border-right:none; }
-    .stat i          { font-size:20px; color:var(--green); margin-bottom:4px; display:block; }
-    .stat-label      { font-size:10px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-muted); margin-bottom:2px; }
-    .stat-val        { font-size:14px; font-weight:500; color:var(--text); }
+    /* ── ACCORDION ── */
+    .acc{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);margin-bottom:10px;overflow:hidden}
+    .acc-head{display:flex;align-items:center;gap:12px;padding:1rem 1.25rem;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+    .acc-head:hover{background:var(--surface2)}
+    .acc-ico{width:36px;height:36px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+    .acc-title{font-size:15px;font-weight:500;color:var(--text);flex:1}
+    .acc-chev{font-size:17px;color:var(--text-faint);transition:transform 0.22s;flex-shrink:0}
+    .acc-body{padding:0 1.25rem 1.25rem;border-top:1px solid var(--border);display:none}
+    .acc-body.open{display:block}
+    .acc-head.active .acc-chev{transform:rotate(180deg)}
+    .acc-body>*:first-child{margin-top:12px}
 
-    /* CONTENT */
-    .content { max-width:560px; margin:0 auto; padding:1rem 1rem 0; }
+    /* ── ROWS ── */
+    .row{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;gap:12px}
+    .row:last-child{border-bottom:none}
+    .row-label{color:var(--text-muted);display:flex;align-items:center;gap:7px;white-space:nowrap}
+    .row-val{color:var(--text);font-weight:500;text-align:right}
 
-    /* WIFI */
-    .wifi-box  { background:var(--green-pale); border-radius:var(--radius); padding:1rem 1.25rem; display:flex; align-items:center; gap:14px; margin-bottom:10px; border:1px solid rgba(29,158,117,0.2); }
-    .wifi-icon { font-size:26px; color:var(--green-mid); flex-shrink:0; }
-    .wifi-data { flex:1; }
-    .wifi-name { font-size:15px; font-weight:500; color:var(--green-dark); }
-    @media (prefers-color-scheme:dark) { .wifi-name { color:var(--green-light); } }
-    .wifi-pass { font-size:14px; color:var(--green); font-family:'DM Mono',monospace; letter-spacing:0.5px; margin-top:2px; }
-    .wifi-copy { background:var(--surface); border:1px solid rgba(29,158,117,0.3); color:var(--green-mid); font-size:12px; font-family:'DM Sans',sans-serif; padding:6px 13px; border-radius:var(--radius-sm); cursor:pointer; white-space:nowrap; display:flex; align-items:center; gap:5px; transition:background 0.15s; }
-    .wifi-copy:hover { background:var(--green-pale); }
+    /* ── POOL GRID ── */
+    .pool-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-top:12px}
+    .pool-card{background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px}
+    .pool-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px}
+    .pool-temp{font-size:12px;color:var(--to-teal);margin-bottom:2px}
+    .pool-note{font-size:11px;color:var(--text-muted)}
 
-    /* ACCORDION */
-    .acc       { background:var(--surface); border-radius:var(--radius); border:1px solid var(--border); margin-bottom:10px; overflow:hidden; }
-    .acc-head  { display:flex; align-items:center; gap:12px; padding:1rem 1.25rem; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; }
-    .acc-head:hover { background:var(--surface2); }
-    .acc-ico   { width:36px; height:36px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
-    .acc-title { font-size:15px; font-weight:500; color:var(--text); flex:1; }
-    .acc-chev  { font-size:17px; color:var(--text-faint); transition:transform 0.22s; flex-shrink:0; }
-    .acc-body  { padding:0 1.25rem 1.25rem; border-top:1px solid var(--border); display:none; }
-    .acc-body.open { display:block; }
-    .acc-head.active .acc-chev { transform:rotate(180deg); }
-    .acc-body > *:first-child { margin-top:12px; }
+    /* ── LIST ── */
+    .info-list{list-style:none;padding-top:8px}
+    .info-list li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:14px;color:var(--text)}
+    .info-list li:last-child{border-bottom:none}
+    .info-list li i{color:var(--to-teal);font-size:17px;flex-shrink:0}
+    .list-badge{margin-left:auto;font-size:11px;background:var(--to-teal-light);color:var(--to-navy);padding:2px 8px;border-radius:99px;white-space:nowrap}
+    @media(prefers-color-scheme:dark){.list-badge{color:var(--to-teal-mid)}}
 
-    /* ROWS */
-    .row       { display:flex; justify-content:space-between; align-items:flex-start; padding:10px 0; border-bottom:1px solid var(--border); font-size:14px; gap:12px; }
-    .row:last-child { border-bottom:none; }
-    .row-label { color:var(--text-muted); display:flex; align-items:center; gap:7px; white-space:nowrap; }
-    .row-val   { color:var(--text); font-weight:500; text-align:right; }
+    /* ── CHECKLIST ── */
+    .checklist{list-style:none;padding-top:6px}
+    .checklist li{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;color:var(--text);cursor:pointer;-webkit-tap-highlight-color:transparent}
+    .checklist li:last-child{border-bottom:none}
+    .chk-box{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--border-med);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+    .checklist li.done .chk-box{background:var(--to-teal);border-color:var(--to-teal)}
+    .checklist li.done>span{text-decoration:line-through;color:var(--text-faint)}
 
-    /* POOL GRID */
-    .pool-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; padding-top:12px; }
-    .pool-card { background:var(--surface2); border-radius:var(--radius-sm); padding:10px 12px; }
-    .pool-name { font-size:13px; font-weight:500; color:var(--text); margin-bottom:3px; }
-    .pool-temp { font-size:12px; color:var(--green); margin-bottom:2px; }
-    .pool-note { font-size:11px; color:var(--text-muted); }
+    /* ── TIP ── */
+    .tip{background:var(--to-teal-light);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--to-navy);margin-top:10px;display:flex;gap:8px;align-items:flex-start;line-height:1.5}
+    .tip+.tip{margin-top:6px}
+    .tip i{flex-shrink:0;margin-top:1px;color:var(--to-teal)}
+    @media(prefers-color-scheme:dark){.tip{color:var(--to-teal-mid)}}
 
-    /* LIST */
-    .info-list { list-style:none; padding-top:8px; }
-    .info-list li { display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--border); font-size:14px; color:var(--text); }
-    .info-list li:last-child { border-bottom:none; }
-    .info-list li i { color:var(--green); font-size:17px; flex-shrink:0; }
-    .list-badge { margin-left:auto; font-size:11px; background:var(--green-pale); color:var(--green-dark); padding:2px 8px; border-radius:99px; white-space:nowrap; }
-    @media (prefers-color-scheme:dark) { .list-badge { color:var(--green-light); } }
+    /* ── CONTACTS ── */
+    .contact{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+    .contact:last-child{border-bottom:none}
+    .avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:500;font-size:14px;flex-shrink:0}
+    .contact-info{flex:1}
+    .contact-name{font-size:14px;font-weight:500;color:var(--text);margin-bottom:2px}
+    .contact-role{font-size:12px;color:var(--text-muted)}
+    .contact-btns{display:flex;gap:6px}
+    .icon-btn{width:36px;height:36px;border-radius:var(--radius-sm);background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:17px;color:var(--text-muted);text-decoration:none;transition:color 0.15s,background 0.15s}
+    .icon-btn:hover{color:var(--to-teal);background:var(--to-teal-light)}
 
-    /* CHECKLIST */
-    .checklist { list-style:none; padding-top:6px; }
-    .checklist li { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--border); font-size:14px; color:var(--text); cursor:pointer; -webkit-tap-highlight-color:transparent; }
-    .checklist li:last-child { border-bottom:none; }
-    .chk-box { width:22px; height:22px; border-radius:6px; border:1.5px solid var(--border-med); flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
-    .checklist li.done .chk-box { background:var(--green); border-color:var(--green); }
-    .checklist li.done > span { text-decoration:line-through; color:var(--text-faint); }
+    /* ── NEARBY ── */
+    .nearby-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-top:10px}
+    .nearby-item{background:var(--surface2);border-radius:var(--radius-sm);padding:10px 12px}
+    .nearby-cat{font-size:11px;text-transform:uppercase;letter-spacing:0.4px;color:var(--text-faint);margin-bottom:3px}
+    .nearby-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:2px}
+    .nearby-dist{font-size:12px;color:var(--to-teal)}
 
-    /* TIP */
-    .tip { background:var(--green-pale); border-radius:var(--radius-sm); padding:10px 14px; font-size:13px; color:var(--green-dark); margin-top:10px; display:flex; gap:8px; align-items:flex-start; line-height:1.5; }
-    .tip+.tip { margin-top:6px; }
-    .tip i { flex-shrink:0; margin-top:1px; color:var(--green); }
-    @media (prefers-color-scheme:dark) { .tip { color:var(--green-light); } }
+    /* ── MAP BTN ── */
+    .map-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:var(--surface2);border-radius:var(--radius-sm);border:1px solid var(--border);height:120px;margin-top:10px;cursor:pointer;font-size:14px;color:var(--text-muted);text-decoration:none;transition:background 0.15s}
+    .map-btn i{font-size:30px;color:var(--to-teal)}
+    .map-btn:hover{background:var(--to-teal-light);color:var(--to-teal)}
 
-    /* CONTACTS */
-    .contact { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
-    .contact:last-child { border-bottom:none; }
-    .avatar { width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:500; font-size:14px; flex-shrink:0; }
-    .contact-info { flex:1; }
-    .contact-name { font-size:14px; font-weight:500; color:var(--text); margin-bottom:2px; }
-    .contact-role { font-size:12px; color:var(--text-muted); }
-    .contact-btns { display:flex; gap:6px; }
-    .icon-btn { width:36px; height:36px; border-radius:var(--radius-sm); background:var(--surface2); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:17px; color:var(--text-muted); text-decoration:none; transition:color 0.15s, background 0.15s; }
-    .icon-btn:hover { color:var(--green); background:var(--green-pale); }
-
-    /* NEARBY */
-    .nearby-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; padding-top:10px; }
-    .nearby-item { background:var(--surface2); border-radius:var(--radius-sm); padding:10px 12px; }
-    .nearby-cat  { font-size:11px; text-transform:uppercase; letter-spacing:0.4px; color:var(--text-faint); margin-bottom:3px; }
-    .nearby-name { font-size:13px; font-weight:500; color:var(--text); margin-bottom:2px; }
-    .nearby-dist { font-size:12px; color:var(--green); }
-
-    /* MAP BTN */
-    .map-btn { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; background:var(--surface2); border-radius:var(--radius-sm); border:1px solid var(--border); height:120px; margin-top:10px; cursor:pointer; font-size:14px; color:var(--text-muted); text-decoration:none; transition:background 0.15s; }
-    .map-btn i { font-size:30px; color:var(--green); }
-    .map-btn:hover { background:var(--green-pale); color:var(--green); }
-
-    /* FOOTER */
-    .footer { max-width:560px; margin:2rem auto 0; padding:0 1rem; text-align:center; }
-    .footer i { font-size:22px; color:var(--green); }
-    .footer-title { font-size:15px; font-weight:500; color:var(--text); margin:6px 0 3px; }
-    .footer-sub   { font-size:12px; color:var(--text-muted); }
-    .footer-sub a { color:var(--green); text-decoration:none; }
-    .footer-sub a:hover { text-decoration:underline; }
+    /* ── FOOTER ── */
+    .footer{max-width:560px;margin:2rem auto 0;padding:0 1rem;text-align:center}
+    .footer-logo{height:36px;width:auto;opacity:0.5;margin-bottom:8px}
+    .footer-title{font-size:14px;font-weight:500;color:var(--text);margin-bottom:4px}
+    .footer-sub{font-size:12px;color:var(--text-muted)}
+    .footer-sub a{color:var(--to-teal);text-decoration:none}
+    .footer-sub a:hover{text-decoration:underline}
   </style>
 </head>
 <body>
 
-<!-- LANGUAGE PICKER -->
+<!-- LANG OVERLAY -->
 <div id="lang-overlay" role="dialog" aria-modal="true" aria-label="Choose language">
-  <i class="ti ti-waves lo-wave"></i>
-  <h1 class="lo-title">Terme Ozren</h1>
-  <p class="lo-sub">Odaberite jezik<br>Choose language &bull; Sprache w&auml;hlen</p>
+  <img class="lo-logo" src="https://termeozren.com/wp-content/uploads/2020/12/Logo-Terme-Ozren.png" alt="Terme Ozren logo" onerror="this.style.display='none'"/>
+  <p class="lo-sub">Odaberite jezik &bull; Choose language &bull; Sprache w&auml;hlen</p>
   <div class="lang-grid">
     <button class="lang-btn" onclick="chooseLang('bs')">
-      <span class="lang-flag">&#127463;&#127462;</span>
+      <span class="lang-flag">&#x1F1E7;&#x1F1E6;</span>
       <span class="lang-name">Bosanski</span>
-      <span class="lang-native">Bosanski / BiH</span>
     </button>
     <button class="lang-btn" onclick="chooseLang('sr')">
-      <span class="lang-flag">&#127479;&#127480;</span>
+      <span class="lang-flag">&#x1F1F7;&#x1F1F8;</span>
       <span class="lang-name">Srpski</span>
-      <span class="lang-native">Srpski / RS</span>
     </button>
     <button class="lang-btn" onclick="chooseLang('en')">
-      <span class="lang-flag">&#127468;&#127463;</span>
+      <span class="lang-flag">&#x1F1EC;&#x1F1E7;</span>
       <span class="lang-name">English</span>
-      <span class="lang-native">English</span>
     </button>
     <button class="lang-btn" onclick="chooseLang('de')">
-      <span class="lang-flag">&#127465;&#127466;</span>
+      <span class="lang-flag">&#x1F1E9;&#x1F1EA;</span>
       <span class="lang-name">Deutsch</span>
-      <span class="lang-native">Deutsch</span>
     </button>
   </div>
 </div>
 
 <!-- LANG SWITCHER -->
 <button id="lang-switcher" onclick="resetLang()" aria-label="Change language">
-  <span id="sw-flag">&#127463;&#127462;</span>
-  <span id="sw-label">Bosanski</span>
-  <i class="ti ti-chevron-down" style="font-size:13px;opacity:0.6;"></i>
+  <span id="sw-flag">&#x1F1E7;&#x1F1E6;</span>
+  <span id="sw-label">BS</span>
+  <i class="ti ti-chevron-down" style="font-size:12px;opacity:0.6"></i>
 </button>
 
-<!-- MAIN APP -->
+<!-- APP -->
 <div id="app">
 
   <div class="hero">
     <div class="hero-inner">
+      <img class="hero-logo" src="https://termeozren.com/wp-content/uploads/2020/12/Logo-Terme-Ozren.png" alt="Terme Ozren" onerror="this.style.display='none'"/>
       <p class="hero-eyebrow"><span data-t="welcome"></span></p>
       <h1 class="hero-title">Terme Ozren</h1>
       <p class="hero-sub">Kakmu&#382;, 74317 Petrovo &middot; Republika Srpska, BiH</p>
@@ -251,7 +253,7 @@
     <div class="stat"><i class="ti ti-login"></i><div class="stat-label" data-t="checkin"></div><div class="stat-val">14:00</div></div>
     <div class="stat"><i class="ti ti-logout"></i><div class="stat-label" data-t="checkout"></div><div class="stat-val">11:00</div></div>
     <div class="stat"><i class="ti ti-waves"></i><div class="stat-label" data-t="poolsLabel"></div><div class="stat-val">10&#8211;19h</div></div>
-    <div class="stat"><i class="ti ti-temperature"></i><div class="stat-label" data-t="waterTemp"></div><div class="stat-val">29&#8211;36 &deg;C</div></div>
+    <div class="stat"><i class="ti ti-temperature"></i><div class="stat-label" data-t="waterTemp"></div><div class="stat-val">29&#8211;36&deg;C</div></div>
   </div>
 
   <div class="content">
@@ -270,18 +272,18 @@
     <!-- POOLS -->
     <div class="acc">
       <div class="acc-head" onclick="tog(this)">
-        <div class="acc-ico" style="background:#E1F5EE;"><i class="ti ti-waves" style="color:#0F6E56;"></i></div>
+        <div class="acc-ico" style="background:var(--to-teal-light)"><i class="ti ti-waves" style="color:var(--to-teal)"></i></div>
         <span class="acc-title" data-t="poolsTitle"></span>
         <i class="ti ti-chevron-down acc-chev"></i>
       </div>
       <div class="acc-body">
         <div class="pool-grid">
-          <div class="pool-card"><div class="pool-name" data-t="pool1name"></div><div class="pool-temp"><i class="ti ti-temperature" style="font-size:12px;"></i> 34&#8211;36 &deg;C</div><div class="pool-note" data-t="pool1note"></div></div>
-          <div class="pool-card"><div class="pool-name" data-t="pool2name"></div><div class="pool-temp"><i class="ti ti-temperature" style="font-size:12px;"></i> 29&#8211;32 &deg;C</div><div class="pool-note" data-t="pool2note"></div></div>
-          <div class="pool-card"><div class="pool-name" data-t="pool3name"></div><div class="pool-temp"><i class="ti ti-temperature" style="font-size:12px;"></i> 27 &deg;C</div><div class="pool-note" data-t="pool3note"></div></div>
-          <div class="pool-card"><div class="pool-name" data-t="pool4name"></div><div class="pool-temp"><i class="ti ti-temperature" style="font-size:12px;"></i> 30 &deg;C</div><div class="pool-note" data-t="pool4note"></div></div>
-          <div class="pool-card"><div class="pool-name">Aqua park</div><div class="pool-temp"><i class="ti ti-rocket" style="font-size:12px;"></i> <span data-t="aquaParkSub"></span></div><div class="pool-note" data-t="aquaParkNote"></div></div>
-          <div class="pool-card"><div class="pool-name">Jacuzzi</div><div class="pool-temp"><i class="ti ti-temperature" style="font-size:12px;"></i> 36 &deg;C</div><div class="pool-note" data-t="jacuzziNote"></div></div>
+          <div class="pool-card"><div class="pool-name" data-t="pool1name"></div><div class="pool-temp"><i class="ti ti-temperature" style="font-size:12px"></i> 34&#8211;36&deg;C</div><div class="pool-note" data-t="pool1note"></div></div>
+          <div class="pool-card"><div class="pool-name" data-t="pool2name"></div><div class="pool-temp"><i class="ti ti-temperature" style="font-size:12px"></i> 29&#8211;32&deg;C</div><div class="pool-note" data-t="pool2note"></div></div>
+          <div class="pool-card"><div class="pool-name" data-t="pool3name"></div><div class="pool-temp"><i class="ti ti-temperature" style="font-size:12px"></i> 27&deg;C</div><div class="pool-note" data-t="pool3note"></div></div>
+          <div class="pool-card"><div class="pool-name" data-t="pool4name"></div><div class="pool-temp"><i class="ti ti-temperature" style="font-size:12px"></i> 30&deg;C</div><div class="pool-note" data-t="pool4note"></div></div>
+          <div class="pool-card"><div class="pool-name">Aqua park</div><div class="pool-temp"><i class="ti ti-rocket" style="font-size:12px"></i> <span data-t="aquaParkSub"></span></div><div class="pool-note" data-t="aquaParkNote"></div></div>
+          <div class="pool-card"><div class="pool-name">Jacuzzi</div><div class="pool-temp"><i class="ti ti-temperature" style="font-size:12px"></i> 36&deg;C</div><div class="pool-note" data-t="jacuzziNote"></div></div>
         </div>
         <div class="tip"><i class="ti ti-clock"></i><span data-t="poolTip1"></span></div>
         <div class="tip"><i class="ti ti-info-circle"></i><span data-t="poolTip2"></span></div>
@@ -291,7 +293,7 @@
     <!-- WELLNESS -->
     <div class="acc">
       <div class="acc-head" onclick="tog(this)">
-        <div class="acc-ico" style="background:#EEEDFE;"><i class="ti ti-spa" style="color:#534AB7;"></i></div>
+        <div class="acc-ico" style="background:#EEF0FF"><i class="ti ti-spa" style="color:#534AB7"></i></div>
         <span class="acc-title">Wellness &amp; Spa</span>
         <i class="ti ti-chevron-down acc-chev"></i>
       </div>
@@ -313,7 +315,7 @@
     <!-- FOOD -->
     <div class="acc">
       <div class="acc-head" onclick="tog(this)">
-        <div class="acc-ico" style="background:#FAEEDA;"><i class="ti ti-fork" style="color:#854F0B;"></i></div>
+        <div class="acc-ico" style="background:#FFF0E0"><i class="ti ti-fork" style="color:#A05820"></i></div>
         <span class="acc-title" data-t="foodTitle"></span>
         <i class="ti ti-chevron-down acc-chev"></i>
       </div>
@@ -329,7 +331,7 @@
     <!-- ROOM INFO -->
     <div class="acc">
       <div class="acc-head" onclick="tog(this)">
-        <div class="acc-ico" style="background:#E6F1FB;"><i class="ti ti-info-circle" style="color:#185FA5;"></i></div>
+        <div class="acc-ico" style="background:#E6F1FB"><i class="ti ti-info-circle" style="color:#185FA5"></i></div>
         <span class="acc-title" data-t="roomTitle"></span>
         <i class="ti ti-chevron-down acc-chev"></i>
       </div>
@@ -346,7 +348,7 @@
     <!-- ACTIVITIES -->
     <div class="acc">
       <div class="acc-head" onclick="tog(this)">
-        <div class="acc-ico" style="background:#EAF3DE;"><i class="ti ti-run" style="color:#3B6D11;"></i></div>
+        <div class="acc-ico" style="background:#EAF3DE"><i class="ti ti-run" style="color:#3B6D11"></i></div>
         <span class="acc-title" data-t="activitiesTitle"></span>
         <i class="ti ti-chevron-down acc-chev"></i>
       </div>
@@ -362,10 +364,10 @@
       </div>
     </div>
 
-    <!-- CHECKOUT CHECKLIST -->
+    <!-- CHECKLIST -->
     <div class="acc">
       <div class="acc-head" onclick="tog(this)">
-        <div class="acc-ico" style="background:#FBEAF0;"><i class="ti ti-checklist" style="color:#993556;"></i></div>
+        <div class="acc-ico" style="background:#FBEAF0"><i class="ti ti-checklist" style="color:#993556"></i></div>
         <span class="acc-title" data-t="checklistTitle"></span>
         <i class="ti ti-chevron-down acc-chev"></i>
       </div>
@@ -385,16 +387,16 @@
     <!-- LOCATION -->
     <div class="acc">
       <div class="acc-head" onclick="tog(this)">
-        <div class="acc-ico" style="background:#E1F5EE;"><i class="ti ti-map-pin" style="color:#0F6E56;"></i></div>
+        <div class="acc-ico" style="background:var(--to-teal-light)"><i class="ti ti-map-pin" style="color:var(--to-teal)"></i></div>
         <span class="acc-title" data-t="locationTitle"></span>
         <i class="ti ti-chevron-down acc-chev"></i>
       </div>
       <div class="acc-body">
         <div class="nearby-grid">
-          <div class="nearby-item"><div class="nearby-cat" data-t="city"></div><div class="nearby-name">Doboj</div><div class="nearby-dist"><i class="ti ti-car" style="font-size:12px;"></i> 25 km ~25 min</div></div>
-          <div class="nearby-item"><div class="nearby-cat" data-t="city"></div><div class="nearby-name">Gra&#269;anica</div><div class="nearby-dist"><i class="ti ti-car" style="font-size:12px;"></i> 1 km ~2 min</div></div>
-          <div class="nearby-item"><div class="nearby-cat" data-t="mountain"></div><div class="nearby-name">Ozren</div><div class="nearby-dist"><i class="ti ti-walk" style="font-size:12px;"></i> <span data-t="directAccess"></span></div></div>
-          <div class="nearby-item"><div class="nearby-cat" data-t="airport"></div><div class="nearby-name">Tuzla</div><div class="nearby-dist"><i class="ti ti-car" style="font-size:12px;"></i> ~40 km</div></div>
+          <div class="nearby-item"><div class="nearby-cat" data-t="city"></div><div class="nearby-name">Doboj</div><div class="nearby-dist"><i class="ti ti-car" style="font-size:12px"></i> 25 km ~25 min</div></div>
+          <div class="nearby-item"><div class="nearby-cat" data-t="city"></div><div class="nearby-name">Gra&#269;anica</div><div class="nearby-dist"><i class="ti ti-car" style="font-size:12px"></i> 1 km ~2 min</div></div>
+          <div class="nearby-item"><div class="nearby-cat" data-t="mountain"></div><div class="nearby-name">Ozren</div><div class="nearby-dist"><i class="ti ti-walk" style="font-size:12px"></i> <span data-t="directAccess"></span></div></div>
+          <div class="nearby-item"><div class="nearby-cat" data-t="airport"></div><div class="nearby-name">Tuzla</div><div class="nearby-dist"><i class="ti ti-car" style="font-size:12px"></i> ~40 km</div></div>
         </div>
         <a class="map-btn" href="https://maps.google.com/?q=Terme+Ozren+Petrovo+BiH" target="_blank" rel="noopener">
           <i class="ti ti-map-2"></i><span data-t="openMaps"></span>
@@ -405,28 +407,28 @@
     <!-- CONTACTS -->
     <div class="acc">
       <div class="acc-head" onclick="tog(this)">
-        <div class="acc-ico" style="background:#FBEAF0;"><i class="ti ti-phone-call" style="color:#993556;"></i></div>
+        <div class="acc-ico" style="background:#FBEAF0"><i class="ti ti-phone-call" style="color:#993556"></i></div>
         <span class="acc-title" data-t="contactsTitle"></span>
         <i class="ti ti-chevron-down acc-chev"></i>
       </div>
       <div class="acc-body">
         <div class="contact">
-          <div class="avatar" style="background:#E1F5EE;"><i class="ti ti-building" style="font-size:18px;color:#085041;"></i></div>
+          <div class="avatar" style="background:var(--to-teal-light)"><i class="ti ti-building" style="font-size:18px;color:var(--to-navy)"></i></div>
           <div class="contact-info"><div class="contact-name" data-t="reception"></div><div class="contact-role" data-t="receptionHours"></div></div>
           <div class="contact-btns"><a class="icon-btn" href="tel:+38765606858"><i class="ti ti-phone"></i></a><a class="icon-btn" href="mailto:info@termeozren.com"><i class="ti ti-mail"></i></a></div>
         </div>
         <div class="contact">
-          <div class="avatar" style="background:#EEEDFE;"><i class="ti ti-spa" style="font-size:18px;color:#534AB7;"></i></div>
+          <div class="avatar" style="background:#EEF0FF"><i class="ti ti-spa" style="font-size:18px;color:#534AB7"></i></div>
           <div class="contact-info"><div class="contact-name">Wellness &amp; Spa</div><div class="contact-role" data-t="spaHours"></div></div>
           <div class="contact-btns"><a class="icon-btn" href="tel:+38765606858"><i class="ti ti-phone"></i></a></div>
         </div>
         <div class="contact">
-          <div class="avatar" style="background:#FBEAF0;"><i class="ti ti-urgent" style="font-size:18px;color:#993556;"></i></div>
+          <div class="avatar" style="background:#FBEAF0"><i class="ti ti-urgent" style="font-size:18px;color:#993556"></i></div>
           <div class="contact-info"><div class="contact-name" data-t="emergency"></div><div class="contact-role" data-t="emergencyNumbers"></div></div>
-          <div class="contact-btns"><a class="icon-btn" href="tel:124"><i class="ti ti-phone" style="color:#D85A30;"></i></a></div>
+          <div class="contact-btns"><a class="icon-btn" href="tel:124"><i class="ti ti-phone" style="color:#D85A30"></i></a></div>
         </div>
         <div class="contact">
-          <div class="avatar" style="background:#E6F1FB;"><i class="ti ti-world" style="font-size:18px;color:#185FA5;"></i></div>
+          <div class="avatar" style="background:#E6F1FB"><i class="ti ti-world" style="font-size:18px;color:#185FA5"></i></div>
           <div class="contact-info"><div class="contact-name" data-t="website"></div><div class="contact-role" data-t="websiteSub"></div></div>
           <div class="contact-btns"><a class="icon-btn" href="https://termeozren.com" target="_blank" rel="noopener"><i class="ti ti-external-link"></i></a></div>
         </div>
@@ -436,14 +438,15 @@
   </div>
 
   <div class="footer">
-    <i class="ti ti-waves"></i>
+    <img class="footer-logo" src="https://termeozren.com/wp-content/uploads/2020/12/Logo-Terme-Ozren.png" alt="Terme Ozren" onerror="this.style.display='none'"/>
     <div class="footer-title" data-t="footerTitle"></div>
     <div class="footer-sub">Kakmu&#382;, 74317 Petrovo &middot; <a href="https://termeozren.com" target="_blank" rel="noopener">termeozren.com</a> &middot; <a href="tel:+38765606858">065 606 858</a></div>
   </div>
-</div>
+
+</div><!-- /app -->
 
 <script>
-const T = {
+const T={
   bs:{
     welcome:"Dobrodo\u0161li u",pools:"bazena",rooms:"sobe",restaurants:"restorana",freeParking:"Besplatan parking",
     checkin:"Check-in",checkout:"Check-out",poolsLabel:"Bazeni",waterTemp:"Temp. vode",copy:"Kopiraj",
@@ -485,7 +488,7 @@ const T = {
     emergency:"Hitna / Vatrogasci / Policija",emergencyNumbers:"BiH \u2014 124 / 123 / 122",
     website:"Slu\u017ebeni web sajt",websiteSub:"Ponude, paketi, rezervacije",
     footerTitle:"Terme Ozren \u2014 oaza zdravlja i relaksacije",
-    copiedText:"Kopirano!",swLabel:"Bosanski",swFlag:"\uD83C\uDDE7\uD83C\uDDE6"
+    copiedText:"Kopirano!",swLabel:"BS",swFlag:"\u{1F1E7}\u{1F1E6}"
   },
   sr:{
     welcome:"Dobrodo\u0161li u",pools:"bazena",rooms:"sobe",restaurants:"restorana",freeParking:"Besplatan parking",
@@ -528,7 +531,7 @@ const T = {
     emergency:"Hitna / Vatrogasci / Policija",emergencyNumbers:"BiH \u2014 124 / 123 / 122",
     website:"Zvani\u010dni web sajt",websiteSub:"Ponude, paketi, rezervacije",
     footerTitle:"Terme Ozren \u2014 oaza zdravlja i relaksacije",
-    copiedText:"Kopirano!",swLabel:"Srpski",swFlag:"\uD83C\uDDF7\uD83C\uDDF8"
+    copiedText:"Kopirano!",swLabel:"SR",swFlag:"\u{1F1F7}\u{1F1F8}"
   },
   en:{
     welcome:"Welcome to",pools:"pools",rooms:"rooms",restaurants:"restaurants",freeParking:"Free parking",
@@ -541,7 +544,7 @@ const T = {
     aquaParkSub:"Adrenaline",aquaParkNote:"2 large + 3 children's slides",
     jacuzziNote:"2 jacuzzis for relaxation",
     poolTip1:"Pools are open every day from <strong>10:00 to 19:00</strong>. We recommend arriving early.",
-    poolTip2:"Thermomineral water helps with rheumatism, spine issues, psoriasis, high blood pressure and sinus problems.",
+    poolTip2:"Thermomineral water helps with rheumatism, spine, psoriasis, high blood pressure and sinus problems.",
     spa1:"Finnish sauna (dry)",spa2:"Steam sauna (hammam)",spa3:"Salt room",
     spa4:"Relaxation massage",spa5:"Medical massage",spa6:"Sports massage",
     spa7:"Aquatherm facial treatment",spa8:"Power C & Eternal treatment",
@@ -571,7 +574,7 @@ const T = {
     emergency:"Ambulance / Fire / Police",emergencyNumbers:"BiH \u2014 124 / 123 / 122",
     website:"Official website",websiteSub:"Offers, packages, reservations",
     footerTitle:"Terme Ozren \u2014 oasis of health and relaxation",
-    copiedText:"Copied!",swLabel:"English",swFlag:"\uD83C\uDDEC\uD83C\uDDE7"
+    copiedText:"Copied!",swLabel:"EN",swFlag:"\u{1F1EC}\u{1F1E7}"
   },
   de:{
     welcome:"Willkommen in",pools:"Pools",rooms:"Zimmer",restaurants:"Restaurants",freeParking:"Kostenloses Parken",
@@ -583,95 +586,88 @@ const T = {
     pool4name:"Kinderbecken",pool4note:"3 Becken + Rutschen + Pilz",
     aquaParkSub:"Adrenalin",aquaParkNote:"2 gro\u00dfe + 3 Kinderrutschen",
     jacuzziNote:"2 Whirlpools zur Entspannung",
-    poolTip1:"Die Pools sind t\u00e4glich von <strong>10:00 bis 19:00</strong> ge\u00f6ffnet. Wir empfehlen fr\u00fchzeitige Ankunft.",
-    poolTip2:"Das Thermalmineralwasser hilft bei Rheuma, R\u00fcckenproblemen, Psoriasis, Bluthochdruck und Nasennebenh\u00f6hlen.",
+    poolTip1:"Die Pools sind t\u00e4glich von <strong>10:00 bis 19:00</strong> ge\u00f6ffnet. Fr\u00fchzeitige Ankunft empfohlen.",
+    poolTip2:"Das Thermalwasser hilft bei Rheuma, R\u00fcckenproblemen, Psoriasis, Bluthochdruck und Nasennebenh\u00f6hlen.",
     spa1:"Finnische Sauna (trocken)",spa2:"Dampfsauna (Hamam)",spa3:"Salzraum",
     spa4:"Entspannungsmassage",spa5:"Medizinische Massage",spa6:"Sportmassage",
     spa7:"Aquatherm Gesichtsbehandlung",spa8:"Power C & Eternal Behandlung",
-    spaTip:"Massagen und Behandlungen m\u00fcssen im Voraus gebucht werden. Bitte wenden Sie sich an die Rezeption.",
+    spaTip:"Bitte Massagen und Behandlungen im Voraus reservieren. Rezeption kontaktieren.",
     foodTitle:"Essen & Trinken",rest1:"\u00c0-la-carte-Restaurant 1",rest2:"\u00c0-la-carte-Restaurant 2",
     breakfast:"Fr\u00fchst\u00fcck (Buffet)",poolBar:"Pool-Bar",touristTax:"Kurtaxe",perPersonNight:"Person/Nacht",
-    roomTitle:"Zimmer & Hotelinformationen",
-    towels:"Badehandt\u00fccher",towelsVal:"Nicht aus dem Zimmer mitnehmen",
+    roomTitle:"Zimmer & Hotel",
+    towels:"Badehandt\u00fccher",towelsVal:"Nicht aus dem Zimmer",
     ac:"Klima / Heizung",acVal:"Fernbedienung im Zimmer",
     parking:"Parkplatz",parkingVal:"Kostenlos, neben dem Hotel",
     bikeRental:"Fahrradverleih",bikeRentalVal:"Anfrage an der Rezeption",
     pets:"Haustiere",petsVal:"Nicht erlaubt",
-    cancellation:"Stornierung",cancellationVal:"Kostenlos bis 48h im Voraus",
+    cancellation:"Stornierung",cancellationVal:"Kostenlos bis 48h vorher",
     activitiesTitle:"Aktivit\u00e4ten & Natur",
     act1:"Radfahren auf dem Berg Ozren",act2:"Quad-Fahren auf dem Berg",
     act3:"Wanderwege beim Hotel",act4:"Tierteich beim Hotel",
     act5:"Tischtennis",act6:"Outdoor-Kinderspielplatz",
     rental:"Verleih",reservation:"Reservierung",
     checklistTitle:"Abreise-Checkliste",
-    chk1:"Schl\u00fcsselkarte an der Rezeption abgeben",chk2:"Zus\u00e4tzliche Leistungen bezahlen",
-    chk3:"Klimaanlage und alle Ger\u00e4te ausschalten",chk4:"Handtücher im Bad lassen",
-    chk5:"Safe und alle Schubladen pr\u00fcfen",chk6:"Pers\u00f6nliche Gegenst\u00e4nde vom Balkon nehmen",chk7:"Checkout bis 11:00 Uhr",
+    chk1:"Schl\u00fcsselkarte abgeben",chk2:"Zus\u00e4tzliche Leistungen bezahlen",
+    chk3:"Klimaanlage ausschalten",chk4:"Handtücher im Bad lassen",
+    chk5:"Safe und Schubladen pr\u00fcfen",chk6:"Sachen vom Balkon nehmen",chk7:"Checkout bis 11:00 Uhr",
     locationTitle:"Lage & Umgebung",city:"Stadt",mountain:"Berg",airport:"Flughafen",directAccess:"Direktzugang",
-    openMaps:"Google Maps Navigation \u00f6ffnen",
+    openMaps:"Google Maps \u00f6ffnen",
     contactsTitle:"Kontakte",reception:"Rezeption \u2014 Terme Ozren",receptionHours:"Verf\u00fcgbar 0\u201324 Uhr",
     spaHours:"Behandlungsbuchungen \u00b7 09:00\u201320:00",
     emergency:"Notaufnahme / Feuerwehr / Polizei",emergencyNumbers:"BiH \u2014 124 / 123 / 122",
     website:"Offizielle Website",websiteSub:"Angebote, Pakete, Reservierungen",
-    footerTitle:"Terme Ozren \u2014 Oase der Gesundheit und Entspannung",
-    copiedText:"Kopiert!",swLabel:"Deutsch",swFlag:"\uD83C\uDDE9\uD83C\uDDEA"
+    footerTitle:"Terme Ozren \u2014 Oase der Gesundheit",
+    copiedText:"Kopiert!",swLabel:"DE",swFlag:"\u{1F1E9}\u{1F1EA}"
   }
 };
 
-function chooseLang(lang) {
-  const ov = document.getElementById('lang-overlay');
+function chooseLang(lang){
+  const ov=document.getElementById('lang-overlay');
   ov.classList.add('fade-out');
-  setTimeout(() => { ov.style.display = 'none'; }, 400);
+  setTimeout(()=>{ov.style.display='none'},400);
   document.getElementById('app').classList.add('visible');
   applyLang(lang);
-  const sw = document.getElementById('lang-switcher');
-  sw.style.display = 'flex';
-  document.getElementById('sw-flag').textContent  = T[lang].swFlag;
-  document.getElementById('sw-label').textContent = T[lang].swLabel;
-  document.documentElement.lang = lang;
+  const sw=document.getElementById('lang-switcher');
+  sw.style.display='flex';
+  document.getElementById('sw-flag').textContent=T[lang].swFlag;
+  document.getElementById('sw-label').textContent=T[lang].swLabel;
+  document.documentElement.lang=lang;
 }
-
-function applyLang(lang) {
-  const t = T[lang];
-  document.querySelectorAll('[data-t]').forEach(el => {
-    const k = el.getAttribute('data-t');
-    if (t[k] !== undefined) el.innerHTML = t[k];
+function applyLang(lang){
+  const t=T[lang];
+  document.querySelectorAll('[data-t]').forEach(el=>{
+    const k=el.getAttribute('data-t');
+    if(t[k]!==undefined)el.innerHTML=t[k];
   });
-  document.querySelectorAll('.wifi-copy').forEach(btn => {
-    btn.innerHTML = '<i class="ti ti-copy"></i> ' + t.copy;
-    btn._copiedText = t.copiedText;
+  document.querySelectorAll('.wifi-copy').forEach(btn=>{
+    btn.innerHTML='<i class="ti ti-copy"></i> '+t.copy;
+    btn._ct=t.copiedText;
   });
 }
-
-function resetLang() {
-  const ov = document.getElementById('lang-overlay');
-  ov.style.display = 'flex';
-  ov.classList.remove('fade-out');
-  ov.style.opacity = '';
+function resetLang(){
+  const ov=document.getElementById('lang-overlay');
+  ov.style.display='flex';ov.classList.remove('fade-out');ov.style.opacity='';
   document.getElementById('app').classList.remove('visible');
-  document.getElementById('lang-switcher').style.display = 'none';
+  document.getElementById('lang-switcher').style.display='none';
 }
-
-function tog(head) {
-  const body = head.nextElementSibling;
-  const open = body.classList.toggle('open');
-  head.classList.toggle('active', open);
+function tog(head){
+  const body=head.nextElementSibling;
+  const open=body.classList.toggle('open');
+  head.classList.toggle('active',open);
 }
-
-function chk(li) {
+function chk(li){
   li.classList.toggle('done');
-  const box = li.querySelector('.chk-box');
-  box.innerHTML = li.classList.contains('done') ? '<i class="ti ti-check" style="font-size:14px;color:#fff;"></i>' : '';
+  const box=li.querySelector('.chk-box');
+  box.innerHTML=li.classList.contains('done')?'<i class="ti ti-check" style="font-size:14px;color:#fff"></i>':'';
 }
-
-function copyWifi(btn, pass) {
-  navigator.clipboard.writeText(pass).then(() => {
-    const copied = btn._copiedText || 'Kopirano!';
-    btn.innerHTML = '<i class="ti ti-check"></i> ' + copied;
-    setTimeout(() => {
-      const lang = document.documentElement.lang || 'bs';
-      btn.innerHTML = '<i class="ti ti-copy"></i> ' + T[lang].copy;
-    }, 2500);
+function copyWifi(btn,pass){
+  navigator.clipboard.writeText(pass).then(()=>{
+    const ct=btn._ct||'OK';
+    btn.innerHTML='<i class="ti ti-check"></i> '+ct;
+    setTimeout(()=>{
+      const lang=document.documentElement.lang||'bs';
+      btn.innerHTML='<i class="ti ti-copy"></i> '+T[lang].copy;
+    },2500);
   });
 }
 </script>
