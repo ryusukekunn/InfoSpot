@@ -4,427 +4,258 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Terme Ozren — Info kartica</title>
-  <meta name="description" content="Digitalna info kartica za goste Terme Ozren — bazeni, wellness, kontakti i sve informacije na jednom mjestu." />
+  <meta name="description" content="Digitalna info kartica za goste Terme Ozren." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Mono&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.x/dist/tabler-icons.min.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --green-dark:   #085041;
-      --green-mid:    #0F6E56;
-      --green:        #1D9E75;
-      --green-light:  #9FE1CB;
-      --green-pale:   #E1F5EE;
-      --bg:           #F5F4EF;
-      --surface:      #FFFFFF;
-      --surface2:     #F0EFEA;
-      --border:       rgba(0,0,0,0.10);
-      --border-med:   rgba(0,0,0,0.18);
-      --text:         #1A1A18;
-      --text-muted:   #6B6B64;
-      --text-faint:   #9B9B93;
-      --radius:       14px;
-      --radius-sm:    9px;
+      --green-dark:#085041; --green-mid:#0F6E56; --green:#1D9E75; --green-light:#9FE1CB; --green-pale:#E1F5EE;
+      --bg:#F5F4EF; --surface:#FFFFFF; --surface2:#F0EFEA;
+      --border:rgba(0,0,0,0.10); --border-med:rgba(0,0,0,0.18);
+      --text:#1A1A18; --text-muted:#6B6B64; --text-faint:#9B9B93;
+      --radius:14px; --radius-sm:9px;
     }
-
-    @media (prefers-color-scheme: dark) {
+    @media (prefers-color-scheme:dark) {
       :root {
-        --bg:         #111210;
-        --surface:    #1C1D1B;
-        --surface2:   #252623;
-        --border:     rgba(255,255,255,0.09);
-        --border-med: rgba(255,255,255,0.16);
-        --text:       #E8E7E1;
-        --text-muted: #8A8A83;
-        --text-faint: #5A5A55;
-        --green-pale: #0D2E24;
+        --bg:#111210; --surface:#1C1D1B; --surface2:#252623;
+        --border:rgba(255,255,255,0.09); --border-med:rgba(255,255,255,0.16);
+        --text:#E8E7E1; --text-muted:#8A8A83; --text-faint:#5A5A55; --green-pale:#0D2E24;
       }
     }
+    html { scroll-behavior:smooth; }
+    body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; padding:0 0 3rem; }
 
-    html { scroll-behavior: smooth; }
+    /* LANGUAGE OVERLAY */
+    #lang-overlay {
+      position:fixed; inset:0; z-index:9999;
+      background:var(--green-dark);
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      padding:2rem 1.5rem; overflow:hidden;
+    }
+    #lang-overlay::before {
+      content:''; position:absolute; top:-100px; right:-100px;
+      width:350px; height:350px; border-radius:50%;
+      background:rgba(255,255,255,0.04); pointer-events:none;
+    }
+    #lang-overlay::after {
+      content:''; position:absolute; bottom:-80px; left:-60px;
+      width:260px; height:260px; border-radius:50%;
+      background:rgba(255,255,255,0.03); pointer-events:none;
+    }
+    .lo-wave { font-size:52px; color:var(--green-light); margin-bottom:1.25rem; position:relative; z-index:1; }
+    .lo-title { font-size:clamp(22px,6vw,32px); font-weight:500; color:#fff; text-align:center; margin-bottom:6px; position:relative; z-index:1; }
+    .lo-sub   { font-size:13px; color:rgba(255,255,255,0.45); text-align:center; margin-bottom:2.5rem; position:relative; z-index:1; line-height:1.6; }
+    .lang-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; width:100%; max-width:380px; position:relative; z-index:1; }
+    .lang-btn {
+      background:rgba(255,255,255,0.09); border:1px solid rgba(255,255,255,0.14);
+      border-radius:var(--radius); padding:1.1rem 1rem; cursor:pointer;
+      display:flex; flex-direction:column; align-items:center; gap:8px;
+      transition:background 0.18s, border-color 0.18s, transform 0.15s;
+      -webkit-tap-highlight-color:transparent; color:#fff; font-family:'DM Sans',sans-serif;
+    }
+    .lang-btn:hover  { background:rgba(255,255,255,0.18); border-color:rgba(255,255,255,0.3); transform:translateY(-2px); }
+    .lang-btn:active { transform:translateY(0); }
+    .lang-flag   { font-size:32px; line-height:1; }
+    .lang-name   { font-size:15px; font-weight:500; color:#fff; }
+    .lang-native { font-size:12px; color:rgba(255,255,255,0.5); }
+    #lang-overlay.fade-out { animation:fadeOut 0.38s ease forwards; }
+    @keyframes fadeOut { to { opacity:0; pointer-events:none; } }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding: 0 0 3rem;
+    /* LANG SWITCHER */
+    #lang-switcher {
+      position:fixed; top:12px; right:12px; z-index:200;
+      background:rgba(8,80,65,0.88); backdrop-filter:blur(8px);
+      border:1px solid rgba(255,255,255,0.16); border-radius:99px;
+      padding:5px 12px; display:none; align-items:center; gap:6px;
+      cursor:pointer; font-size:13px; color:rgba(255,255,255,0.85);
+      font-family:'DM Sans',sans-serif; transition:background 0.15s;
     }
+    #lang-switcher:hover { background:rgba(8,80,65,1); }
 
-    /* ── HERO ── */
-    .hero {
-      background: var(--green-dark);
-      padding: 2.5rem 1.25rem 2rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -80px; right: -80px;
-      width: 280px; height: 280px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.04);
-    }
-    .hero::after {
-      content: '';
-      position: absolute;
-      bottom: -40px; left: 20%;
-      width: 180px; height: 180px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.03);
-    }
-    .hero-inner { max-width: 560px; margin: 0 auto; position: relative; z-index: 1; }
-    .hero-eyebrow {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: var(--green-light);
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .hero-eyebrow::before {
-      content: '';
-      display: inline-block;
-      width: 20px; height: 1.5px;
-      background: var(--green-light);
-      opacity: 0.6;
-    }
-    .hero-title {
-      font-size: clamp(28px, 7vw, 38px);
-      font-weight: 500;
-      color: #fff;
-      line-height: 1.15;
-      margin-bottom: 6px;
-    }
-    .hero-sub {
-      font-size: 14px;
-      color: rgba(255,255,255,0.5);
-      margin-bottom: 1.5rem;
-    }
-    .hero-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-    }
-    .badge {
-      background: rgba(255,255,255,0.10);
-      color: rgba(255,255,255,0.85);
-      font-size: 12px;
-      padding: 5px 12px;
-      border-radius: 99px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
+    /* APP */
+    #app { display:none; }
+    #app.visible { display:block; }
 
-    /* ── STATS BAR ── */
-    .stats {
-      max-width: 560px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-    }
-    .stat {
-      padding: 1rem 0.75rem;
-      text-align: center;
-      border-right: 1px solid var(--border);
-    }
-    .stat:last-child { border-right: none; }
-    .stat i { font-size: 20px; color: var(--green); margin-bottom: 4px; display: block; }
-    .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 2px; }
-    .stat-val { font-size: 14px; font-weight: 500; color: var(--text); }
+    /* HERO */
+    .hero { background:var(--green-dark); padding:2.5rem 1.25rem 2rem; position:relative; overflow:hidden; }
+    .hero::before { content:''; position:absolute; top:-80px; right:-80px; width:280px; height:280px; border-radius:50%; background:rgba(255,255,255,0.04); }
+    .hero::after  { content:''; position:absolute; bottom:-40px; left:20%; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.03); }
+    .hero-inner    { max-width:560px; margin:0 auto; position:relative; z-index:1; }
+    .hero-eyebrow  { font-size:11px; text-transform:uppercase; letter-spacing:2px; color:var(--green-light); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+    .hero-eyebrow::before { content:''; display:inline-block; width:20px; height:1.5px; background:var(--green-light); opacity:0.6; }
+    .hero-title  { font-size:clamp(28px,7vw,38px); font-weight:500; color:#fff; line-height:1.15; margin-bottom:6px; }
+    .hero-sub    { font-size:14px; color:rgba(255,255,255,0.5); margin-bottom:1.5rem; }
+    .hero-badges { display:flex; flex-wrap:wrap; gap:7px; }
+    .badge { background:rgba(255,255,255,0.10); color:rgba(255,255,255,0.85); font-size:12px; padding:5px 12px; border-radius:99px; display:flex; align-items:center; gap:5px; border:1px solid rgba(255,255,255,0.08); }
 
-    /* ── CONTENT ── */
-    .content { max-width: 560px; margin: 0 auto; padding: 1rem 1rem 0; }
+    /* STATS */
+    .stats { max-width:560px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); background:var(--surface); border-bottom:1px solid var(--border); }
+    .stat { padding:1rem 0.75rem; text-align:center; border-right:1px solid var(--border); }
+    .stat:last-child { border-right:none; }
+    .stat i          { font-size:20px; color:var(--green); margin-bottom:4px; display:block; }
+    .stat-label      { font-size:10px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-muted); margin-bottom:2px; }
+    .stat-val        { font-size:14px; font-weight:500; color:var(--text); }
 
-    /* ── WIFI BOX ── */
-    .wifi-box {
-      background: var(--green-pale);
-      border-radius: var(--radius);
-      padding: 1rem 1.25rem;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 10px;
-      border: 1px solid rgba(29,158,117,0.2);
-    }
-    .wifi-icon { font-size: 26px; color: var(--green-mid); flex-shrink: 0; }
-    .wifi-data { flex: 1; }
-    .wifi-name { font-size: 15px; font-weight: 500; color: var(--green-dark); }
-    @media (prefers-color-scheme: dark) { .wifi-name { color: var(--green-light); } }
-    .wifi-pass {
-      font-size: 14px;
-      color: var(--green);
-      font-family: 'DM Mono', monospace;
-      letter-spacing: 0.5px;
-      margin-top: 2px;
-    }
-    .wifi-copy {
-      background: var(--surface);
-      border: 1px solid rgba(29,158,117,0.3);
-      color: var(--green-mid);
-      font-size: 12px;
-      font-family: 'DM Sans', sans-serif;
-      padding: 6px 13px;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      transition: background 0.15s;
-    }
-    .wifi-copy:hover { background: var(--green-pale); }
+    /* CONTENT */
+    .content { max-width:560px; margin:0 auto; padding:1rem 1rem 0; }
 
-    /* ── ACCORDION ── */
-    .acc { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 10px; overflow: hidden; }
-    .acc-head {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 1rem 1.25rem;
-      cursor: pointer;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .acc-head:hover { background: var(--surface2); }
-    .acc-ico {
-      width: 36px; height: 36px;
-      border-radius: var(--radius-sm);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px;
-      flex-shrink: 0;
-    }
-    .acc-title { font-size: 15px; font-weight: 500; color: var(--text); flex: 1; }
-    .acc-chev { font-size: 17px; color: var(--text-faint); transition: transform 0.22s; flex-shrink: 0; }
-    .acc-body {
-      padding: 0 1.25rem 1.25rem;
-      border-top: 1px solid var(--border);
-      display: none;
-    }
-    .acc-body.open { display: block; }
-    .acc-head.active .acc-chev { transform: rotate(180deg); }
+    /* WIFI */
+    .wifi-box  { background:var(--green-pale); border-radius:var(--radius); padding:1rem 1.25rem; display:flex; align-items:center; gap:14px; margin-bottom:10px; border:1px solid rgba(29,158,117,0.2); }
+    .wifi-icon { font-size:26px; color:var(--green-mid); flex-shrink:0; }
+    .wifi-data { flex:1; }
+    .wifi-name { font-size:15px; font-weight:500; color:var(--green-dark); }
+    @media (prefers-color-scheme:dark) { .wifi-name { color:var(--green-light); } }
+    .wifi-pass { font-size:14px; color:var(--green); font-family:'DM Mono',monospace; letter-spacing:0.5px; margin-top:2px; }
+    .wifi-copy { background:var(--surface); border:1px solid rgba(29,158,117,0.3); color:var(--green-mid); font-size:12px; font-family:'DM Sans',sans-serif; padding:6px 13px; border-radius:var(--radius-sm); cursor:pointer; white-space:nowrap; display:flex; align-items:center; gap:5px; transition:background 0.15s; }
+    .wifi-copy:hover { background:var(--green-pale); }
 
-    /* ── INFO ROWS ── */
-    .row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 14px;
-      gap: 12px;
-    }
-    .row:last-child { border-bottom: none; }
-    .row-label { color: var(--text-muted); display: flex; align-items: center; gap: 7px; white-space: nowrap; }
-    .row-val { color: var(--text); font-weight: 500; text-align: right; }
+    /* ACCORDION */
+    .acc       { background:var(--surface); border-radius:var(--radius); border:1px solid var(--border); margin-bottom:10px; overflow:hidden; }
+    .acc-head  { display:flex; align-items:center; gap:12px; padding:1rem 1.25rem; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; }
+    .acc-head:hover { background:var(--surface2); }
+    .acc-ico   { width:36px; height:36px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+    .acc-title { font-size:15px; font-weight:500; color:var(--text); flex:1; }
+    .acc-chev  { font-size:17px; color:var(--text-faint); transition:transform 0.22s; flex-shrink:0; }
+    .acc-body  { padding:0 1.25rem 1.25rem; border-top:1px solid var(--border); display:none; }
+    .acc-body.open { display:block; }
+    .acc-head.active .acc-chev { transform:rotate(180deg); }
+    .acc-body > *:first-child { margin-top:12px; }
 
-    /* ── POOL GRID ── */
-    .pool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding-top: 12px; }
-    .pool-card { background: var(--surface2); border-radius: var(--radius-sm); padding: 10px 12px; }
-    .pool-name { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
-    .pool-temp { font-size: 12px; color: var(--green); margin-bottom: 2px; }
-    .pool-note { font-size: 11px; color: var(--text-muted); }
+    /* ROWS */
+    .row       { display:flex; justify-content:space-between; align-items:flex-start; padding:10px 0; border-bottom:1px solid var(--border); font-size:14px; gap:12px; }
+    .row:last-child { border-bottom:none; }
+    .row-label { color:var(--text-muted); display:flex; align-items:center; gap:7px; white-space:nowrap; }
+    .row-val   { color:var(--text); font-weight:500; text-align:right; }
 
-    /* ── LIST ── */
-    .info-list { list-style: none; padding-top: 8px; }
-    .info-list li {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 9px 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 14px;
-      color: var(--text);
-    }
-    .info-list li:last-child { border-bottom: none; }
-    .info-list li i { color: var(--green); font-size: 17px; flex-shrink: 0; }
-    .list-badge {
-      margin-left: auto;
-      font-size: 11px;
-      background: var(--green-pale);
-      color: var(--green-dark);
-      padding: 2px 8px;
-      border-radius: 99px;
-      white-space: nowrap;
-    }
-    @media (prefers-color-scheme: dark) { .list-badge { color: var(--green-light); } }
+    /* POOL GRID */
+    .pool-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; padding-top:12px; }
+    .pool-card { background:var(--surface2); border-radius:var(--radius-sm); padding:10px 12px; }
+    .pool-name { font-size:13px; font-weight:500; color:var(--text); margin-bottom:3px; }
+    .pool-temp { font-size:12px; color:var(--green); margin-bottom:2px; }
+    .pool-note { font-size:11px; color:var(--text-muted); }
 
-    /* ── CHECKLIST ── */
-    .checklist { list-style: none; padding-top: 6px; }
-    .checklist li {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 14px;
-      color: var(--text);
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .checklist li:last-child { border-bottom: none; }
-    .chk-box {
-      width: 22px; height: 22px;
-      border-radius: 6px;
-      border: 1.5px solid var(--border-med);
-      flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.15s;
-    }
-    .checklist li.done .chk-box { background: var(--green); border-color: var(--green); }
-    .checklist li.done > span { text-decoration: line-through; color: var(--text-faint); }
+    /* LIST */
+    .info-list { list-style:none; padding-top:8px; }
+    .info-list li { display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--border); font-size:14px; color:var(--text); }
+    .info-list li:last-child { border-bottom:none; }
+    .info-list li i { color:var(--green); font-size:17px; flex-shrink:0; }
+    .list-badge { margin-left:auto; font-size:11px; background:var(--green-pale); color:var(--green-dark); padding:2px 8px; border-radius:99px; white-space:nowrap; }
+    @media (prefers-color-scheme:dark) { .list-badge { color:var(--green-light); } }
 
-    /* ── TIP BOX ── */
-    .tip {
-      background: var(--green-pale);
-      border-radius: var(--radius-sm);
-      padding: 10px 14px;
-      font-size: 13px;
-      color: var(--green-dark);
-      margin-top: 10px;
-      display: flex;
-      gap: 8px;
-      align-items: flex-start;
-      line-height: 1.5;
-    }
-    .tip + .tip { margin-top: 6px; }
-    .tip i { flex-shrink: 0; margin-top: 1px; color: var(--green); }
-    @media (prefers-color-scheme: dark) { .tip { color: var(--green-light); } }
+    /* CHECKLIST */
+    .checklist { list-style:none; padding-top:6px; }
+    .checklist li { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--border); font-size:14px; color:var(--text); cursor:pointer; -webkit-tap-highlight-color:transparent; }
+    .checklist li:last-child { border-bottom:none; }
+    .chk-box { width:22px; height:22px; border-radius:6px; border:1.5px solid var(--border-med); flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
+    .checklist li.done .chk-box { background:var(--green); border-color:var(--green); }
+    .checklist li.done > span { text-decoration:line-through; color:var(--text-faint); }
 
-    /* ── CONTACTS ── */
-    .contact {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .contact:last-child { border-bottom: none; }
-    .avatar {
-      width: 42px; height: 42px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 500; font-size: 14px;
-      flex-shrink: 0;
-    }
-    .contact-info { flex: 1; }
-    .contact-name { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
-    .contact-role { font-size: 12px; color: var(--text-muted); }
-    .contact-btns { display: flex; gap: 6px; }
-    .icon-btn {
-      width: 36px; height: 36px;
-      border-radius: var(--radius-sm);
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 17px;
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.15s, background 0.15s;
-    }
-    .icon-btn:hover { color: var(--green); background: var(--green-pale); }
+    /* TIP */
+    .tip { background:var(--green-pale); border-radius:var(--radius-sm); padding:10px 14px; font-size:13px; color:var(--green-dark); margin-top:10px; display:flex; gap:8px; align-items:flex-start; line-height:1.5; }
+    .tip+.tip { margin-top:6px; }
+    .tip i { flex-shrink:0; margin-top:1px; color:var(--green); }
+    @media (prefers-color-scheme:dark) { .tip { color:var(--green-light); } }
 
-    /* ── NEARBY ── */
-    .nearby-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding-top: 10px; }
-    .nearby-item { background: var(--surface2); border-radius: var(--radius-sm); padding: 10px 12px; }
-    .nearby-cat { font-size: 11px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-faint); margin-bottom: 3px; }
-    .nearby-name { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
-    .nearby-dist { font-size: 12px; color: var(--green); }
+    /* CONTACTS */
+    .contact { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
+    .contact:last-child { border-bottom:none; }
+    .avatar { width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:500; font-size:14px; flex-shrink:0; }
+    .contact-info { flex:1; }
+    .contact-name { font-size:14px; font-weight:500; color:var(--text); margin-bottom:2px; }
+    .contact-role { font-size:12px; color:var(--text-muted); }
+    .contact-btns { display:flex; gap:6px; }
+    .icon-btn { width:36px; height:36px; border-radius:var(--radius-sm); background:var(--surface2); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:17px; color:var(--text-muted); text-decoration:none; transition:color 0.15s, background 0.15s; }
+    .icon-btn:hover { color:var(--green); background:var(--green-pale); }
 
-    /* ── MAP BUTTON ── */
-    .map-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      background: var(--surface2);
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      height: 120px;
-      margin-top: 10px;
-      cursor: pointer;
-      font-size: 14px;
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: background 0.15s;
-    }
-    .map-btn i { font-size: 30px; color: var(--green); }
-    .map-btn:hover { background: var(--green-pale); color: var(--green); }
+    /* NEARBY */
+    .nearby-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; padding-top:10px; }
+    .nearby-item { background:var(--surface2); border-radius:var(--radius-sm); padding:10px 12px; }
+    .nearby-cat  { font-size:11px; text-transform:uppercase; letter-spacing:0.4px; color:var(--text-faint); margin-bottom:3px; }
+    .nearby-name { font-size:13px; font-weight:500; color:var(--text); margin-bottom:2px; }
+    .nearby-dist { font-size:12px; color:var(--green); }
 
-    /* ── FOOTER ── */
-    .footer {
-      max-width: 560px;
-      margin: 2rem auto 0;
-      padding: 0 1rem;
-      text-align: center;
-    }
-    .footer i { font-size: 22px; color: var(--green); }
-    .footer-title { font-size: 15px; font-weight: 500; color: var(--text); margin: 6px 0 3px; }
-    .footer-sub { font-size: 12px; color: var(--text-muted); }
-    .footer-sub a { color: var(--green); text-decoration: none; }
-    .footer-sub a:hover { text-decoration: underline; }
+    /* MAP BTN */
+    .map-btn { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; background:var(--surface2); border-radius:var(--radius-sm); border:1px solid var(--border); height:120px; margin-top:10px; cursor:pointer; font-size:14px; color:var(--text-muted); text-decoration:none; transition:background 0.15s; }
+    .map-btn i { font-size:30px; color:var(--green); }
+    .map-btn:hover { background:var(--green-pale); color:var(--green); }
 
-    /* ── PADDING TOP FOR BODY CHILDREN ── */
-    .acc-body > *:first-child { margin-top: 12px; }
+    /* FOOTER */
+    .footer { max-width:560px; margin:2rem auto 0; padding:0 1rem; text-align:center; }
+    .footer i { font-size:22px; color:var(--green); }
+    .footer-title { font-size:15px; font-weight:500; color:var(--text); margin:6px 0 3px; }
+    .footer-sub   { font-size:12px; color:var(--text-muted); }
+    .footer-sub a { color:var(--green); text-decoration:none; }
+    .footer-sub a:hover { text-decoration:underline; }
   </style>
 </head>
 <body>
 
-  <!-- HERO -->
+<!-- LANGUAGE PICKER -->
+<div id="lang-overlay" role="dialog" aria-modal="true" aria-label="Choose language">
+  <i class="ti ti-waves lo-wave"></i>
+  <h1 class="lo-title">Terme Ozren</h1>
+  <p class="lo-sub">Odaberite jezik<br>Choose language &bull; Sprache w&auml;hlen</p>
+  <div class="lang-grid">
+    <button class="lang-btn" onclick="chooseLang('bs')">
+      <span class="lang-flag">&#127463;&#127462;</span>
+      <span class="lang-name">Bosanski</span>
+      <span class="lang-native">Bosanski / BiH</span>
+    </button>
+    <button class="lang-btn" onclick="chooseLang('sr')">
+      <span class="lang-flag">&#127479;&#127480;</span>
+      <span class="lang-name">Srpski</span>
+      <span class="lang-native">Srpski / RS</span>
+    </button>
+    <button class="lang-btn" onclick="chooseLang('en')">
+      <span class="lang-flag">&#127468;&#127463;</span>
+      <span class="lang-name">English</span>
+      <span class="lang-native">English</span>
+    </button>
+    <button class="lang-btn" onclick="chooseLang('de')">
+      <span class="lang-flag">&#127465;&#127466;</span>
+      <span class="lang-name">Deutsch</span>
+      <span class="lang-native">Deutsch</span>
+    </button>
+  </div>
+</div>
+
+<!-- LANG SWITCHER -->
+<button id="lang-switcher" onclick="resetLang()" aria-label="Change language">
+  <span id="sw-flag">&#127463;&#127462;</span>
+  <span id="sw-label">Bosanski</span>
+  <i class="ti ti-chevron-down" style="font-size:13px;opacity:0.6;"></i>
+</button>
+
+<!-- MAIN APP -->
+<div id="app">
+
   <div class="hero">
     <div class="hero-inner">
-      <p class="hero-eyebrow">Dobrodošli u</p>
+      <p class="hero-eyebrow"><span data-t="welcome"></span></p>
       <h1 class="hero-title">Terme Ozren</h1>
-      <p class="hero-sub">Kakmuž, 74317 Petrovo · Republika Srpska, BiH</p>
+      <p class="hero-sub">Kakmu&#382;, 74317 Petrovo &middot; Republika Srpska, BiH</p>
       <div class="hero-badges">
-        <span class="badge"><i class="ti ti-droplet"></i> 11 bazena</span>
+        <span class="badge"><i class="ti ti-droplet"></i> 11 <span data-t="pools"></span></span>
         <span class="badge"><i class="ti ti-spa"></i> Wellness &amp; Spa</span>
-        <span class="badge"><i class="ti ti-bed"></i> 64 sobe</span>
-        <span class="badge"><i class="ti ti-fork"></i> 2 restorana</span>
-        <span class="badge"><i class="ti ti-parking"></i> Besplatan parking</span>
+        <span class="badge"><i class="ti ti-bed"></i> 64 <span data-t="rooms"></span></span>
+        <span class="badge"><i class="ti ti-fork"></i> 2 <span data-t="restaurants"></span></span>
+        <span class="badge"><i class="ti ti-parking"></i> <span data-t="freeParking"></span></span>
       </div>
     </div>
   </div>
 
-  <!-- STATS -->
   <div class="stats">
-    <div class="stat">
-      <i class="ti ti-login"></i>
-      <div class="stat-label">Check-in</div>
-      <div class="stat-val">od 14:00</div>
-    </div>
-    <div class="stat">
-      <i class="ti ti-logout"></i>
-      <div class="stat-label">Check-out</div>
-      <div class="stat-val">do 11:00</div>
-    </div>
-    <div class="stat">
-      <i class="ti ti-waves"></i>
-      <div class="stat-label">Bazeni</div>
-      <div class="stat-val">10–19h</div>
-    </div>
-    <div class="stat">
-      <i class="ti ti-temperature"></i>
-      <div class="stat-label">Temp. vode</div>
-      <div class="stat-val">29–36 °C</div>
-    </div>
+    <div class="stat"><i class="ti ti-login"></i><div class="stat-label" data-t="checkin"></div><div class="stat-val">14:00</div></div>
+    <div class="stat"><i class="ti ti-logout"></i><div class="stat-label" data-t="checkout"></div><div class="stat-val">11:00</div></div>
+    <div class="stat"><i class="ti ti-waves"></i><div class="stat-label" data-t="poolsLabel"></div><div class="stat-val">10&#8211;19h</div></div>
+    <div class="stat"><i class="ti ti-temperature"></i><div class="stat-label" data-t="waterTemp"></div><div class="stat-val">29&#8211;36 &deg;C</div></div>
   </div>
 
   <div class="content">
 
-    <!-- WIFI -->
     <div class="wifi-box">
       <i class="ti ti-wifi wifi-icon"></i>
       <div class="wifi-data">
@@ -432,52 +263,28 @@
         <div class="wifi-pass">termeozren</div>
       </div>
       <button class="wifi-copy" onclick="copyWifi(this,'termeozren')">
-        <i class="ti ti-copy"></i> Kopiraj
+        <i class="ti ti-copy"></i> <span data-t="copy"></span>
       </button>
     </div>
 
-    <!-- BAZENI -->
+    <!-- POOLS -->
     <div class="acc">
       <div class="acc-head" onclick="tog(this)">
         <div class="acc-ico" style="background:#E1F5EE;"><i class="ti ti-waves" style="color:#0F6E56;"></i></div>
-        <span class="acc-title">Bazeni &amp; aqua park</span>
+        <span class="acc-title" data-t="poolsTitle"></span>
         <i class="ti ti-chevron-down acc-chev"></i>
       </div>
       <div class="acc-body">
         <div class="pool-grid">
-          <div class="pool-card">
-            <div class="pool-name">Termalni bazen</div>
-            <div class="pool-temp"><i class="ti ti-temperature" style="font-size:12px;"></i> 34–36 °C</div>
-            <div class="pool-note">Ljekovita termomineralna voda</div>
-          </div>
-          <div class="pool-card">
-            <div class="pool-name">Rekreativni bazeni</div>
-            <div class="pool-temp"><i class="ti ti-temperature" style="font-size:12px;"></i> 29–32 °C</div>
-            <div class="pool-note">4 bazena, bar i masažeri</div>
-          </div>
-          <div class="pool-card">
-            <div class="pool-name">Poluolimpijski</div>
-            <div class="pool-temp"><i class="ti ti-temperature" style="font-size:12px;"></i> 27 °C</div>
-            <div class="pool-note">Za plivače i trening</div>
-          </div>
-          <div class="pool-card">
-            <div class="pool-name">Dječiji bazeni</div>
-            <div class="pool-temp"><i class="ti ti-temperature" style="font-size:12px;"></i> 30 °C</div>
-            <div class="pool-note">3 bazena + tobogani + pečurka</div>
-          </div>
-          <div class="pool-card">
-            <div class="pool-name">Aqua park</div>
-            <div class="pool-temp"><i class="ti ti-rocket" style="font-size:12px;"></i> Adrenalinski</div>
-            <div class="pool-note">2 velika + 3 dječija tobogana</div>
-          </div>
-          <div class="pool-card">
-            <div class="pool-name">Jacuzzi</div>
-            <div class="pool-temp"><i class="ti ti-temperature" style="font-size:12px;"></i> 36 °C</div>
-            <div class="pool-note">2 jacuzzija za relaksaciju</div>
-          </div>
+          <div class="pool-card"><div class="pool-name" data-t="pool1name"></div><div class="pool-temp"><i class="ti ti-temperature" style="font-size:12px;"></i> 34&#8211;36 &deg;C</div><div class="pool-note" data-t="pool1note"></div></div>
+          <div class="pool-card"><div class="pool-name" data-t="pool2name"></div><div class="pool-temp"><i class="ti ti-temperature" style="font-size:12px;"></i> 29&#8211;32 &deg;C</div><div class="pool-note" data-t="pool2note"></div></div>
+          <div class="pool-card"><div class="pool-name" data-t="pool3name"></div><div class="pool-temp"><i class="ti ti-temperature" style="font-size:12px;"></i> 27 &deg;C</div><div class="pool-note" data-t="pool3note"></div></div>
+          <div class="pool-card"><div class="pool-name" data-t="pool4name"></div><div class="pool-temp"><i class="ti ti-temperature" style="font-size:12px;"></i> 30 &deg;C</div><div class="pool-note" data-t="pool4note"></div></div>
+          <div class="pool-card"><div class="pool-name">Aqua park</div><div class="pool-temp"><i class="ti ti-rocket" style="font-size:12px;"></i> <span data-t="aquaParkSub"></span></div><div class="pool-note" data-t="aquaParkNote"></div></div>
+          <div class="pool-card"><div class="pool-name">Jacuzzi</div><div class="pool-temp"><i class="ti ti-temperature" style="font-size:12px;"></i> 36 &deg;C</div><div class="pool-note" data-t="jacuzziNote"></div></div>
         </div>
-        <div class="tip"><i class="ti ti-clock"></i> Bazeni su otvoreni svaki dan od <strong>10:00 do 19:00</strong>. Preporučujemo dolazak ranije.</div>
-        <div class="tip"><i class="ti ti-info-circle"></i> Termomineralna voda pomaže kod reumatizma, problema sa kičmom, psorijaze, visokog pritiska i sinusnih tegoba.</div>
+        <div class="tip"><i class="ti ti-clock"></i><span data-t="poolTip1"></span></div>
+        <div class="tip"><i class="ti ti-info-circle"></i><span data-t="poolTip2"></span></div>
       </div>
     </div>
 
@@ -490,218 +297,383 @@
       </div>
       <div class="acc-body">
         <ul class="info-list">
-          <li><i class="ti ti-flame"></i> Finska sauna (suha) <span class="list-badge">2 komada</span></li>
-          <li><i class="ti ti-droplet"></i> Parna sauna (hamam)</li>
-          <li><i class="ti ti-wind"></i> Slana soba</li>
-          <li><i class="ti ti-massage"></i> Relax masaža</li>
-          <li><i class="ti ti-massage"></i> Medicinska masaža</li>
-          <li><i class="ti ti-massage"></i> Sportska masaža</li>
-          <li><i class="ti ti-sparkles"></i> Aquatherm tretman lica</li>
-          <li><i class="ti ti-sparkles"></i> Power C tretman &amp; Eternal tretman</li>
+          <li><i class="ti ti-flame"></i><span data-t="spa1"></span><span class="list-badge">2x</span></li>
+          <li><i class="ti ti-droplet"></i><span data-t="spa2"></span></li>
+          <li><i class="ti ti-wind"></i><span data-t="spa3"></span></li>
+          <li><i class="ti ti-massage"></i><span data-t="spa4"></span></li>
+          <li><i class="ti ti-massage"></i><span data-t="spa5"></span></li>
+          <li><i class="ti ti-massage"></i><span data-t="spa6"></span></li>
+          <li><i class="ti ti-sparkles"></i><span data-t="spa7"></span></li>
+          <li><i class="ti ti-sparkles"></i><span data-t="spa8"></span></li>
         </ul>
-        <div class="tip"><i class="ti ti-calendar"></i> Masaže i tretmane potrebno je rezervisati unaprijed. Pozovite recepciju ili pošaljite e-mail.</div>
+        <div class="tip"><i class="ti ti-calendar"></i><span data-t="spaTip"></span></div>
       </div>
     </div>
 
-    <!-- HRANA -->
+    <!-- FOOD -->
     <div class="acc">
       <div class="acc-head" onclick="tog(this)">
         <div class="acc-ico" style="background:#FAEEDA;"><i class="ti ti-fork" style="color:#854F0B;"></i></div>
-        <span class="acc-title">Hrana &amp; piće</span>
+        <span class="acc-title" data-t="foodTitle"></span>
         <i class="ti ti-chevron-down acc-chev"></i>
       </div>
       <div class="acc-body">
-        <div class="row"><span class="row-label"><i class="ti ti-building"></i> À la carte restoran 1</span><span class="row-val">07:00–23:00</span></div>
-        <div class="row"><span class="row-label"><i class="ti ti-building"></i> À la carte restoran 2</span><span class="row-val">12:00–23:00</span></div>
-        <div class="row"><span class="row-label"><i class="ti ti-coffee"></i> Doručak (buffet)</span><span class="row-val">07:30–10:30</span></div>
-        <div class="row"><span class="row-label"><i class="ti ti-glass"></i> Bazen bar</span><span class="row-val">10:00–19:00</span></div>
-        <div class="row"><span class="row-label"><i class="ti ti-coin"></i> Boravišna taksa</span><span class="row-val">2,00 KM/osobi/noći</span></div>
+        <div class="row"><span class="row-label"><i class="ti ti-building"></i><span data-t="rest1"></span></span><span class="row-val">07:00&#8211;23:00</span></div>
+        <div class="row"><span class="row-label"><i class="ti ti-building"></i><span data-t="rest2"></span></span><span class="row-val">12:00&#8211;23:00</span></div>
+        <div class="row"><span class="row-label"><i class="ti ti-coffee"></i><span data-t="breakfast"></span></span><span class="row-val">07:30&#8211;10:30</span></div>
+        <div class="row"><span class="row-label"><i class="ti ti-glass"></i><span data-t="poolBar"></span></span><span class="row-val">10:00&#8211;19:00</span></div>
+        <div class="row"><span class="row-label"><i class="ti ti-coin"></i><span data-t="touristTax"></span></span><span class="row-val">2,00 KM/<span data-t="perPersonNight"></span></span></div>
       </div>
     </div>
 
-    <!-- INFORMACIJE O SOBI -->
+    <!-- ROOM INFO -->
     <div class="acc">
       <div class="acc-head" onclick="tog(this)">
         <div class="acc-ico" style="background:#E6F1FB;"><i class="ti ti-info-circle" style="color:#185FA5;"></i></div>
-        <span class="acc-title">Informacije o sobi &amp; hotelu</span>
+        <span class="acc-title" data-t="roomTitle"></span>
         <i class="ti ti-chevron-down acc-chev"></i>
       </div>
       <div class="acc-body">
-        <div class="row"><span class="row-label"><i class="ti ti-hanger"></i> Ručnici za bazen</span><span class="row-val">Ne iznositi iz sobe</span></div>
-        <div class="row"><span class="row-label"><i class="ti ti-air-conditioning"></i> Klima / grijanje</span><span class="row-val">Daljinski u sobi</span></div>
-        <div class="row"><span class="row-label"><i class="ti ti-parking"></i> Parking</span><span class="row-val">Besplatan, uz hotel</span></div>
-        <div class="row"><span class="row-label"><i class="ti ti-bicycle"></i> Iznajmljivanje bicikla</span><span class="row-val">Upit na recepciji</span></div>
-        <div class="row"><span class="row-label"><i class="ti ti-paw"></i> Kućni ljubimci</span><span class="row-val">Nisu dozvoljeni</span></div>
-        <div class="row"><span class="row-label"><i class="ti ti-calendar-x"></i> Otkazivanje rezervacije</span><span class="row-val">Besplatno 48h unaprijed</span></div>
+        <div class="row"><span class="row-label"><i class="ti ti-hanger"></i><span data-t="towels"></span></span><span class="row-val" data-t="towelsVal"></span></div>
+        <div class="row"><span class="row-label"><i class="ti ti-air-conditioning"></i><span data-t="ac"></span></span><span class="row-val" data-t="acVal"></span></div>
+        <div class="row"><span class="row-label"><i class="ti ti-parking"></i><span data-t="parking"></span></span><span class="row-val" data-t="parkingVal"></span></div>
+        <div class="row"><span class="row-label"><i class="ti ti-bicycle"></i><span data-t="bikeRental"></span></span><span class="row-val" data-t="bikeRentalVal"></span></div>
+        <div class="row"><span class="row-label"><i class="ti ti-paw"></i><span data-t="pets"></span></span><span class="row-val" data-t="petsVal"></span></div>
+        <div class="row"><span class="row-label"><i class="ti ti-calendar-x"></i><span data-t="cancellation"></span></span><span class="row-val" data-t="cancellationVal"></span></div>
       </div>
     </div>
 
-    <!-- AKTIVNOSTI -->
+    <!-- ACTIVITIES -->
     <div class="acc">
       <div class="acc-head" onclick="tog(this)">
         <div class="acc-ico" style="background:#EAF3DE;"><i class="ti ti-run" style="color:#3B6D11;"></i></div>
-        <span class="acc-title">Aktivnosti &amp; priroda</span>
+        <span class="acc-title" data-t="activitiesTitle"></span>
         <i class="ti ti-chevron-down acc-chev"></i>
       </div>
       <div class="acc-body">
         <ul class="info-list">
-          <li><i class="ti ti-bicycle"></i> Vožnja bicikla po planini Ozren <span class="list-badge">Iznajmljivanje</span></li>
-          <li><i class="ti ti-motorbike"></i> Quad vožnja planinom <span class="list-badge">Rezervacija</span></li>
-          <li><i class="ti ti-walk"></i> Pješačke staze uz hotel</li>
-          <li><i class="ti ti-fish"></i> Jezerce sa životinjama uz hotel</li>
-          <li><i class="ti ti-ball"></i> Stoni tenis</li>
-          <li><i class="ti ti-baby-carriage"></i> Dječiji park na otvorenom</li>
+          <li><i class="ti ti-bicycle"></i><span data-t="act1"></span><span class="list-badge" data-t="rental"></span></li>
+          <li><i class="ti ti-motorbike"></i><span data-t="act2"></span><span class="list-badge" data-t="reservation"></span></li>
+          <li><i class="ti ti-walk"></i><span data-t="act3"></span></li>
+          <li><i class="ti ti-fish"></i><span data-t="act4"></span></li>
+          <li><i class="ti ti-ball"></i><span data-t="act5"></span></li>
+          <li><i class="ti ti-baby-carriage"></i><span data-t="act6"></span></li>
         </ul>
       </div>
     </div>
 
-    <!-- LISTA ZA ODLAZAK -->
+    <!-- CHECKOUT CHECKLIST -->
     <div class="acc">
       <div class="acc-head" onclick="tog(this)">
         <div class="acc-ico" style="background:#FBEAF0;"><i class="ti ti-checklist" style="color:#993556;"></i></div>
-        <span class="acc-title">Lista za odlazak</span>
+        <span class="acc-title" data-t="checklistTitle"></span>
         <i class="ti ti-chevron-down acc-chev"></i>
       </div>
       <div class="acc-body">
         <ul class="checklist">
-          <li onclick="chk(this)"><div class="chk-box"></div><span>Predati ključ karticu na recepciji</span></li>
-          <li onclick="chk(this)"><div class="chk-box"></div><span>Platiti eventualne dodatne usluge</span></li>
-          <li onclick="chk(this)"><div class="chk-box"></div><span>Isključiti klimu i sve uređaje</span></li>
-          <li onclick="chk(this)"><div class="chk-box"></div><span>Ostaviti ručnike u kupatilu</span></li>
-          <li onclick="chk(this)"><div class="chk-box"></div><span>Provjeriti sef i sve ladice</span></li>
-          <li onclick="chk(this)"><div class="chk-box"></div><span>Uzeti lične stvari sa balkona</span></li>
-          <li onclick="chk(this)"><div class="chk-box"></div><span>Checkout do 11:00</span></li>
+          <li onclick="chk(this)"><div class="chk-box"></div><span data-t="chk1"></span></li>
+          <li onclick="chk(this)"><div class="chk-box"></div><span data-t="chk2"></span></li>
+          <li onclick="chk(this)"><div class="chk-box"></div><span data-t="chk3"></span></li>
+          <li onclick="chk(this)"><div class="chk-box"></div><span data-t="chk4"></span></li>
+          <li onclick="chk(this)"><div class="chk-box"></div><span data-t="chk5"></span></li>
+          <li onclick="chk(this)"><div class="chk-box"></div><span data-t="chk6"></span></li>
+          <li onclick="chk(this)"><div class="chk-box"></div><span data-t="chk7"></span></li>
         </ul>
       </div>
     </div>
 
-    <!-- LOKACIJA -->
+    <!-- LOCATION -->
     <div class="acc">
       <div class="acc-head" onclick="tog(this)">
         <div class="acc-ico" style="background:#E1F5EE;"><i class="ti ti-map-pin" style="color:#0F6E56;"></i></div>
-        <span class="acc-title">Lokacija &amp; okolina</span>
+        <span class="acc-title" data-t="locationTitle"></span>
         <i class="ti ti-chevron-down acc-chev"></i>
       </div>
       <div class="acc-body">
         <div class="nearby-grid">
-          <div class="nearby-item">
-            <div class="nearby-cat">Grad</div>
-            <div class="nearby-name">Doboj</div>
-            <div class="nearby-dist"><i class="ti ti-car" style="font-size:12px;"></i> 25 km · ~25 min</div>
-          </div>
-          <div class="nearby-item">
-            <div class="nearby-cat">Grad</div>
-            <div class="nearby-name">Gračanica</div>
-            <div class="nearby-dist"><i class="ti ti-car" style="font-size:12px;"></i> 1 km · ~2 min</div>
-          </div>
-          <div class="nearby-item">
-            <div class="nearby-cat">Planina</div>
-            <div class="nearby-name">Ozren</div>
-            <div class="nearby-dist"><i class="ti ti-walk" style="font-size:12px;"></i> Direktan pristup</div>
-          </div>
-          <div class="nearby-item">
-            <div class="nearby-cat">Aerodrom</div>
-            <div class="nearby-name">Tuzla</div>
-            <div class="nearby-dist"><i class="ti ti-car" style="font-size:12px;"></i> ~40 km</div>
-          </div>
+          <div class="nearby-item"><div class="nearby-cat" data-t="city"></div><div class="nearby-name">Doboj</div><div class="nearby-dist"><i class="ti ti-car" style="font-size:12px;"></i> 25 km ~25 min</div></div>
+          <div class="nearby-item"><div class="nearby-cat" data-t="city"></div><div class="nearby-name">Gra&#269;anica</div><div class="nearby-dist"><i class="ti ti-car" style="font-size:12px;"></i> 1 km ~2 min</div></div>
+          <div class="nearby-item"><div class="nearby-cat" data-t="mountain"></div><div class="nearby-name">Ozren</div><div class="nearby-dist"><i class="ti ti-walk" style="font-size:12px;"></i> <span data-t="directAccess"></span></div></div>
+          <div class="nearby-item"><div class="nearby-cat" data-t="airport"></div><div class="nearby-name">Tuzla</div><div class="nearby-dist"><i class="ti ti-car" style="font-size:12px;"></i> ~40 km</div></div>
         </div>
         <a class="map-btn" href="https://maps.google.com/?q=Terme+Ozren+Petrovo+BiH" target="_blank" rel="noopener">
-          <i class="ti ti-map-2"></i>
-          <span>Otvori Google Maps navigaciju</span>
+          <i class="ti ti-map-2"></i><span data-t="openMaps"></span>
         </a>
       </div>
     </div>
 
-    <!-- KONTAKTI -->
+    <!-- CONTACTS -->
     <div class="acc">
       <div class="acc-head" onclick="tog(this)">
         <div class="acc-ico" style="background:#FBEAF0;"><i class="ti ti-phone-call" style="color:#993556;"></i></div>
-        <span class="acc-title">Kontakti</span>
+        <span class="acc-title" data-t="contactsTitle"></span>
         <i class="ti ti-chevron-down acc-chev"></i>
       </div>
       <div class="acc-body">
         <div class="contact">
           <div class="avatar" style="background:#E1F5EE;"><i class="ti ti-building" style="font-size:18px;color:#085041;"></i></div>
-          <div class="contact-info">
-            <div class="contact-name">Recepcija — Terme Ozren</div>
-            <div class="contact-role">Dostupna 0–24h</div>
-          </div>
-          <div class="contact-btns">
-            <a class="icon-btn" href="tel:+38765606858" title="Pozovi"><i class="ti ti-phone"></i></a>
-            <a class="icon-btn" href="mailto:info@termeozren.com" title="E-mail"><i class="ti ti-mail"></i></a>
-          </div>
+          <div class="contact-info"><div class="contact-name" data-t="reception"></div><div class="contact-role" data-t="receptionHours"></div></div>
+          <div class="contact-btns"><a class="icon-btn" href="tel:+38765606858"><i class="ti ti-phone"></i></a><a class="icon-btn" href="mailto:info@termeozren.com"><i class="ti ti-mail"></i></a></div>
         </div>
         <div class="contact">
           <div class="avatar" style="background:#EEEDFE;"><i class="ti ti-spa" style="font-size:18px;color:#534AB7;"></i></div>
-          <div class="contact-info">
-            <div class="contact-name">Wellness &amp; Spa centar</div>
-            <div class="contact-role">Rezervacije tretmana · 09:00–20:00</div>
-          </div>
-          <div class="contact-btns">
-            <a class="icon-btn" href="tel:+38765606858" title="Pozovi"><i class="ti ti-phone"></i></a>
-          </div>
+          <div class="contact-info"><div class="contact-name">Wellness &amp; Spa</div><div class="contact-role" data-t="spaHours"></div></div>
+          <div class="contact-btns"><a class="icon-btn" href="tel:+38765606858"><i class="ti ti-phone"></i></a></div>
         </div>
         <div class="contact">
           <div class="avatar" style="background:#FBEAF0;"><i class="ti ti-urgent" style="font-size:18px;color:#993556;"></i></div>
-          <div class="contact-info">
-            <div class="contact-name">Hitna / Vatrogasci / Policija</div>
-            <div class="contact-role">BiH — 124 / 123 / 122</div>
-          </div>
-          <div class="contact-btns">
-            <a class="icon-btn" href="tel:124"><i class="ti ti-phone" style="color:#D85A30;"></i></a>
-          </div>
+          <div class="contact-info"><div class="contact-name" data-t="emergency"></div><div class="contact-role" data-t="emergencyNumbers"></div></div>
+          <div class="contact-btns"><a class="icon-btn" href="tel:124"><i class="ti ti-phone" style="color:#D85A30;"></i></a></div>
         </div>
         <div class="contact">
           <div class="avatar" style="background:#E6F1FB;"><i class="ti ti-world" style="font-size:18px;color:#185FA5;"></i></div>
-          <div class="contact-info">
-            <div class="contact-name">Službeni web sajt</div>
-            <div class="contact-role">Ponude, paketi, rezervacije</div>
-          </div>
-          <div class="contact-btns">
-            <a class="icon-btn" href="https://termeozren.com" target="_blank" rel="noopener"><i class="ti ti-external-link"></i></a>
-          </div>
+          <div class="contact-info"><div class="contact-name" data-t="website"></div><div class="contact-role" data-t="websiteSub"></div></div>
+          <div class="contact-btns"><a class="icon-btn" href="https://termeozren.com" target="_blank" rel="noopener"><i class="ti ti-external-link"></i></a></div>
         </div>
       </div>
     </div>
 
-  </div><!-- /content -->
-
-  <!-- FOOTER -->
-  <div class="footer">
-    <i class="ti ti-waves"></i>
-    <div class="footer-title">Terme Ozren — oaza zdravlja i relaksacije</div>
-    <div class="footer-sub">
-      Kakmuž, 74317 Petrovo ·
-      <a href="https://termeozren.com" target="_blank" rel="noopener">termeozren.com</a> ·
-      <a href="tel:+38765606858">065 606 858</a>
-    </div>
   </div>
 
-  <script>
-    function tog(head) {
-      const body = head.nextElementSibling;
-      const open = body.classList.toggle('open');
-      head.classList.toggle('active', open);
-    }
+  <div class="footer">
+    <i class="ti ti-waves"></i>
+    <div class="footer-title" data-t="footerTitle"></div>
+    <div class="footer-sub">Kakmu&#382;, 74317 Petrovo &middot; <a href="https://termeozren.com" target="_blank" rel="noopener">termeozren.com</a> &middot; <a href="tel:+38765606858">065 606 858</a></div>
+  </div>
+</div>
 
-    function chk(li) {
-      li.classList.toggle('done');
-      const box = li.querySelector('.chk-box');
-      box.innerHTML = li.classList.contains('done')
-        ? '<i class="ti ti-check" style="font-size:14px;color:#fff;"></i>'
-        : '';
-    }
+<script>
+const T = {
+  bs:{
+    welcome:"Dobrodo\u0161li u",pools:"bazena",rooms:"sobe",restaurants:"restorana",freeParking:"Besplatan parking",
+    checkin:"Check-in",checkout:"Check-out",poolsLabel:"Bazeni",waterTemp:"Temp. vode",copy:"Kopiraj",
+    poolsTitle:"Bazeni & aqua park",
+    pool1name:"Termalni bazen",pool1note:"Ljekovita termomineralna voda",
+    pool2name:"Rekreativni bazeni",pool2note:"4 bazena, bar i masa\u017eeri",
+    pool3name:"Poluolimpijski",pool3note:"Za pliva\u010de i trening",
+    pool4name:"Dje\u010diji bazeni",pool4note:"3 bazena + tobogani + pe\u010durka",
+    aquaParkSub:"Adrenalinski",aquaParkNote:"2 velika + 3 dje\u010dija tobogana",
+    jacuzziNote:"2 jacuzzija za relaksaciju",
+    poolTip1:"Bazeni su otvoreni svaki dan od <strong>10:00 do 19:00</strong>. Preporu\u010dujemo dolazak ranije.",
+    poolTip2:"Termomineralna voda poma\u017ee kod reumatizma, ki\u010dme, psorijaze, visokog pritiska i sinusa.",
+    spa1:"Finska sauna (suha)",spa2:"Parna sauna (hamam)",spa3:"Slana soba",
+    spa4:"Relax masa\u017ea",spa5:"Medicinska masa\u017ea",spa6:"Sportska masa\u017ea",
+    spa7:"Aquatherm tretman lica",spa8:"Power C & Eternal tretman",
+    spaTip:"Masa\u017ee i tretmane potrebno je rezervisati unaprijed. Pozovite recepciju.",
+    foodTitle:"Hrana & pi\u0107e",rest1:"\u00c0 la carte restoran 1",rest2:"\u00c0 la carte restoran 2",
+    breakfast:"Doru\u010dak (buffet)",poolBar:"Bazen bar",touristTax:"Boravi\u0161na taksa",perPersonNight:"osobi/no\u0107i",
+    roomTitle:"Informacije o sobi & hotelu",
+    towels:"Ru\u010dnici za bazen",towelsVal:"Ne iznositi iz sobe",
+    ac:"Klima / grijanje",acVal:"Daljinski u sobi",
+    parking:"Parking",parkingVal:"Besplatan, uz hotel",
+    bikeRental:"Iznajmljivanje bicikla",bikeRentalVal:"Upit na recepciji",
+    pets:"Ku\u0107ni ljubimci",petsVal:"Nisu dozvoljeni",
+    cancellation:"Otkazivanje rezervacije",cancellationVal:"Besplatno 48h unaprijed",
+    activitiesTitle:"Aktivnosti & priroda",
+    act1:"Vo\u017enja bicikla po planini Ozren",act2:"Quad vo\u017enja planinom",
+    act3:"Pje\u0161a\u010dke staze uz hotel",act4:"Jezerce sa \u017eivotinjama",
+    act5:"Stoni tenis",act6:"Dje\u010diji park na otvorenom",
+    rental:"Iznajmljivanje",reservation:"Rezervacija",
+    checklistTitle:"Lista za odlazak",
+    chk1:"Predati klju\u010d karticu na recepciji",chk2:"Platiti eventualne dodatne usluge",
+    chk3:"Isklju\u010diti klimu i sve ure\u0111aje",chk4:"Ostaviti ru\u010dnike u kupatilu",
+    chk5:"Provjeriti sef i sve ladice",chk6:"Uzeti li\u010dne stvari sa balkona",chk7:"Checkout do 11:00",
+    locationTitle:"Lokacija & okolina",city:"Grad",mountain:"Planina",airport:"Aerodrom",directAccess:"Direktan pristup",
+    openMaps:"Otvori Google Maps navigaciju",
+    contactsTitle:"Kontakti",reception:"Recepcija \u2014 Terme Ozren",receptionHours:"Dostupna 0\u201324h",
+    spaHours:"Rezervacije tretmana \u00b7 09:00\u201320:00",
+    emergency:"Hitna / Vatrogasci / Policija",emergencyNumbers:"BiH \u2014 124 / 123 / 122",
+    website:"Slu\u017ebeni web sajt",websiteSub:"Ponude, paketi, rezervacije",
+    footerTitle:"Terme Ozren \u2014 oaza zdravlja i relaksacije",
+    copiedText:"Kopirano!",swLabel:"Bosanski",swFlag:"\uD83C\uDDE7\uD83C\uDDE6"
+  },
+  sr:{
+    welcome:"Dobrodo\u0161li u",pools:"bazena",rooms:"sobe",restaurants:"restorana",freeParking:"Besplatan parking",
+    checkin:"Check-in",checkout:"Check-out",poolsLabel:"Bazeni",waterTemp:"Temp. vode",copy:"Kopiraj",
+    poolsTitle:"Bazeni & aqua park",
+    pool1name:"Termalni bazen",pool1note:"Lekovita termomineralna voda",
+    pool2name:"Rekreativni bazeni",pool2note:"4 bazena, bar i masa\u017eeri",
+    pool3name:"Poluolimpijski",pool3note:"Za pliva\u010de i trening",
+    pool4name:"De\u010diji bazeni",pool4note:"3 bazena + tobogani + pe\u010durka",
+    aquaParkSub:"Adrenalinski",aquaParkNote:"2 velika + 3 de\u010dija tobogana",
+    jacuzziNote:"2 \u0111akuzija za relaksaciju",
+    poolTip1:"Bazeni su otvoreni svaki dan od <strong>10:00 do 19:00</strong>. Preporu\u010dujemo dolazak ranije.",
+    poolTip2:"Termomineralna voda poma\u017ee kod reumatizma, ki\u010dme, psorijaze, visokog pritiska i sinusa.",
+    spa1:"Finska sauna (suva)",spa2:"Parna sauna (hamam)",spa3:"Slana soba",
+    spa4:"Relaks masa\u017ea",spa5:"Medicinska masa\u017ea",spa6:"Sportska masa\u017ea",
+    spa7:"Aquatherm tretman lica",spa8:"Power C & Eternal tretman",
+    spaTip:"Masa\u017ee i tretmane potrebno je rezervisati unapred. Pozovite recepciju.",
+    foodTitle:"Hrana & pi\u0107e",rest1:"\u00c0 la carte restoran 1",rest2:"\u00c0 la carte restoran 2",
+    breakfast:"Doru\u010dak (bife)",poolBar:"Bazen bar",touristTax:"Boravi\u0161na taksa",perPersonNight:"osobi/no\u0107i",
+    roomTitle:"Informacije o sobi & hotelu",
+    towels:"Pe\u0161kiri za bazen",towelsVal:"Ne iznositi iz sobe",
+    ac:"Klima / grejanje",acVal:"Daljinski u sobi",
+    parking:"Parking",parkingVal:"Besplatan, uz hotel",
+    bikeRental:"Iznajmljivanje bicikla",bikeRentalVal:"Upit na recepciji",
+    pets:"Ku\u0107ni ljubimci",petsVal:"Nisu dozvoljeni",
+    cancellation:"Otkazivanje rezervacije",cancellationVal:"Besplatno 48h unapred",
+    activitiesTitle:"Aktivnosti & priroda",
+    act1:"Vo\u017enja bicikla po planini Ozren",act2:"Quad vo\u017enja planinom",
+    act3:"Pe\u0161a\u010dke staze uz hotel",act4:"Jezerce sa \u017eivotinjama",
+    act5:"Stoni tenis",act6:"De\u010diji park na otvorenom",
+    rental:"Iznajmljivanje",reservation:"Rezervacija",
+    checklistTitle:"Lista za odlazak",
+    chk1:"Predati klju\u010d karticu na recepciji",chk2:"Platiti eventualne dodatne usluge",
+    chk3:"Isklju\u010diti klimu i sve ure\u0111aje",chk4:"Ostaviti pe\u0161kire u kupatilu",
+    chk5:"Proveriti sef i sve fioke",chk6:"Uzeti li\u010dne stvari sa balkona",chk7:"Checkout do 11:00",
+    locationTitle:"Lokacija & okolina",city:"Grad",mountain:"Planina",airport:"Aerodrom",directAccess:"Direktan pristup",
+    openMaps:"Otvori Google Maps navigaciju",
+    contactsTitle:"Kontakti",reception:"Recepcija \u2014 Terme Ozren",receptionHours:"Dostupna 0\u201324h",
+    spaHours:"Rezervacije tretmana \u00b7 09:00\u201320:00",
+    emergency:"Hitna / Vatrogasci / Policija",emergencyNumbers:"BiH \u2014 124 / 123 / 122",
+    website:"Zvani\u010dni web sajt",websiteSub:"Ponude, paketi, rezervacije",
+    footerTitle:"Terme Ozren \u2014 oaza zdravlja i relaksacije",
+    copiedText:"Kopirano!",swLabel:"Srpski",swFlag:"\uD83C\uDDF7\uD83C\uDDF8"
+  },
+  en:{
+    welcome:"Welcome to",pools:"pools",rooms:"rooms",restaurants:"restaurants",freeParking:"Free parking",
+    checkin:"Check-in",checkout:"Check-out",poolsLabel:"Pools",waterTemp:"Water temp.",copy:"Copy",
+    poolsTitle:"Pools & aqua park",
+    pool1name:"Thermal pool",pool1note:"Healing thermomineral water",
+    pool2name:"Recreational pools",pool2note:"4 pools, bar & massagers",
+    pool3name:"Semi-Olympic pool",pool3note:"For swimmers & training",
+    pool4name:"Children's pools",pool4note:"3 pools + slides + mushroom",
+    aquaParkSub:"Adrenaline",aquaParkNote:"2 large + 3 children's slides",
+    jacuzziNote:"2 jacuzzis for relaxation",
+    poolTip1:"Pools are open every day from <strong>10:00 to 19:00</strong>. We recommend arriving early.",
+    poolTip2:"Thermomineral water helps with rheumatism, spine issues, psoriasis, high blood pressure and sinus problems.",
+    spa1:"Finnish sauna (dry)",spa2:"Steam sauna (hammam)",spa3:"Salt room",
+    spa4:"Relaxation massage",spa5:"Medical massage",spa6:"Sports massage",
+    spa7:"Aquatherm facial treatment",spa8:"Power C & Eternal treatment",
+    spaTip:"Massages and treatments must be booked in advance. Please call reception.",
+    foodTitle:"Food & drinks",rest1:"\u00c0 la carte restaurant 1",rest2:"\u00c0 la carte restaurant 2",
+    breakfast:"Breakfast (buffet)",poolBar:"Pool bar",touristTax:"Tourist tax",perPersonNight:"person/night",
+    roomTitle:"Room & hotel info",
+    towels:"Pool towels",towelsVal:"Do not take out of room",
+    ac:"A/C & heating",acVal:"Remote control in room",
+    parking:"Parking",parkingVal:"Free, next to hotel",
+    bikeRental:"Bike rental",bikeRentalVal:"Ask at reception",
+    pets:"Pets",petsVal:"Not allowed",
+    cancellation:"Cancellation",cancellationVal:"Free up to 48h in advance",
+    activitiesTitle:"Activities & nature",
+    act1:"Cycling on Mt. Ozren",act2:"Quad biking on the mountain",
+    act3:"Hiking trails near hotel",act4:"Animal pond near hotel",
+    act5:"Table tennis",act6:"Outdoor children's park",
+    rental:"Rental",reservation:"Book ahead",
+    checklistTitle:"Departure checklist",
+    chk1:"Return key card at reception",chk2:"Pay for any additional services",
+    chk3:"Turn off A/C and all devices",chk4:"Leave towels in the bathroom",
+    chk5:"Check safe and all drawers",chk6:"Take belongings from balcony",chk7:"Checkout by 11:00",
+    locationTitle:"Location & surroundings",city:"City",mountain:"Mountain",airport:"Airport",directAccess:"Direct access",
+    openMaps:"Open Google Maps navigation",
+    contactsTitle:"Contacts",reception:"Reception \u2014 Terme Ozren",receptionHours:"Available 24/7",
+    spaHours:"Treatment bookings \u00b7 09:00\u201320:00",
+    emergency:"Ambulance / Fire / Police",emergencyNumbers:"BiH \u2014 124 / 123 / 122",
+    website:"Official website",websiteSub:"Offers, packages, reservations",
+    footerTitle:"Terme Ozren \u2014 oasis of health and relaxation",
+    copiedText:"Copied!",swLabel:"English",swFlag:"\uD83C\uDDEC\uD83C\uDDE7"
+  },
+  de:{
+    welcome:"Willkommen in",pools:"Pools",rooms:"Zimmer",restaurants:"Restaurants",freeParking:"Kostenloses Parken",
+    checkin:"Check-in",checkout:"Check-out",poolsLabel:"Pools",waterTemp:"Wassertemp.",copy:"Kopieren",
+    poolsTitle:"Pools & Aquapark",
+    pool1name:"Thermalbad",pool1note:"Heilsames Thermalmineralwasser",
+    pool2name:"Freizeitpools",pool2note:"4 Pools, Bar & Massaged\u00fcsen",
+    pool3name:"Halbolympischer Pool",pool3note:"F\u00fcr Schwimmer & Training",
+    pool4name:"Kinderbecken",pool4note:"3 Becken + Rutschen + Pilz",
+    aquaParkSub:"Adrenalin",aquaParkNote:"2 gro\u00dfe + 3 Kinderrutschen",
+    jacuzziNote:"2 Whirlpools zur Entspannung",
+    poolTip1:"Die Pools sind t\u00e4glich von <strong>10:00 bis 19:00</strong> ge\u00f6ffnet. Wir empfehlen fr\u00fchzeitige Ankunft.",
+    poolTip2:"Das Thermalmineralwasser hilft bei Rheuma, R\u00fcckenproblemen, Psoriasis, Bluthochdruck und Nasennebenh\u00f6hlen.",
+    spa1:"Finnische Sauna (trocken)",spa2:"Dampfsauna (Hamam)",spa3:"Salzraum",
+    spa4:"Entspannungsmassage",spa5:"Medizinische Massage",spa6:"Sportmassage",
+    spa7:"Aquatherm Gesichtsbehandlung",spa8:"Power C & Eternal Behandlung",
+    spaTip:"Massagen und Behandlungen m\u00fcssen im Voraus gebucht werden. Bitte wenden Sie sich an die Rezeption.",
+    foodTitle:"Essen & Trinken",rest1:"\u00c0-la-carte-Restaurant 1",rest2:"\u00c0-la-carte-Restaurant 2",
+    breakfast:"Fr\u00fchst\u00fcck (Buffet)",poolBar:"Pool-Bar",touristTax:"Kurtaxe",perPersonNight:"Person/Nacht",
+    roomTitle:"Zimmer & Hotelinformationen",
+    towels:"Badehandt\u00fccher",towelsVal:"Nicht aus dem Zimmer mitnehmen",
+    ac:"Klima / Heizung",acVal:"Fernbedienung im Zimmer",
+    parking:"Parkplatz",parkingVal:"Kostenlos, neben dem Hotel",
+    bikeRental:"Fahrradverleih",bikeRentalVal:"Anfrage an der Rezeption",
+    pets:"Haustiere",petsVal:"Nicht erlaubt",
+    cancellation:"Stornierung",cancellationVal:"Kostenlos bis 48h im Voraus",
+    activitiesTitle:"Aktivit\u00e4ten & Natur",
+    act1:"Radfahren auf dem Berg Ozren",act2:"Quad-Fahren auf dem Berg",
+    act3:"Wanderwege beim Hotel",act4:"Tierteich beim Hotel",
+    act5:"Tischtennis",act6:"Outdoor-Kinderspielplatz",
+    rental:"Verleih",reservation:"Reservierung",
+    checklistTitle:"Abreise-Checkliste",
+    chk1:"Schl\u00fcsselkarte an der Rezeption abgeben",chk2:"Zus\u00e4tzliche Leistungen bezahlen",
+    chk3:"Klimaanlage und alle Ger\u00e4te ausschalten",chk4:"Handtücher im Bad lassen",
+    chk5:"Safe und alle Schubladen pr\u00fcfen",chk6:"Pers\u00f6nliche Gegenst\u00e4nde vom Balkon nehmen",chk7:"Checkout bis 11:00 Uhr",
+    locationTitle:"Lage & Umgebung",city:"Stadt",mountain:"Berg",airport:"Flughafen",directAccess:"Direktzugang",
+    openMaps:"Google Maps Navigation \u00f6ffnen",
+    contactsTitle:"Kontakte",reception:"Rezeption \u2014 Terme Ozren",receptionHours:"Verf\u00fcgbar 0\u201324 Uhr",
+    spaHours:"Behandlungsbuchungen \u00b7 09:00\u201320:00",
+    emergency:"Notaufnahme / Feuerwehr / Polizei",emergencyNumbers:"BiH \u2014 124 / 123 / 122",
+    website:"Offizielle Website",websiteSub:"Angebote, Pakete, Reservierungen",
+    footerTitle:"Terme Ozren \u2014 Oase der Gesundheit und Entspannung",
+    copiedText:"Kopiert!",swLabel:"Deutsch",swFlag:"\uD83C\uDDE9\uD83C\uDDEA"
+  }
+};
 
-    function copyWifi(btn, pass) {
-      navigator.clipboard.writeText(pass).then(() => {
-        btn.innerHTML = '<i class="ti ti-check"></i> Kopirano!';
-        setTimeout(() => {
-          btn.innerHTML = '<i class="ti ti-copy"></i> Kopiraj';
-        }, 2500);
-      }).catch(() => {
-        btn.innerHTML = pass;
-      });
-    }
-  </script>
+function chooseLang(lang) {
+  const ov = document.getElementById('lang-overlay');
+  ov.classList.add('fade-out');
+  setTimeout(() => { ov.style.display = 'none'; }, 400);
+  document.getElementById('app').classList.add('visible');
+  applyLang(lang);
+  const sw = document.getElementById('lang-switcher');
+  sw.style.display = 'flex';
+  document.getElementById('sw-flag').textContent  = T[lang].swFlag;
+  document.getElementById('sw-label').textContent = T[lang].swLabel;
+  document.documentElement.lang = lang;
+}
+
+function applyLang(lang) {
+  const t = T[lang];
+  document.querySelectorAll('[data-t]').forEach(el => {
+    const k = el.getAttribute('data-t');
+    if (t[k] !== undefined) el.innerHTML = t[k];
+  });
+  document.querySelectorAll('.wifi-copy').forEach(btn => {
+    btn.innerHTML = '<i class="ti ti-copy"></i> ' + t.copy;
+    btn._copiedText = t.copiedText;
+  });
+}
+
+function resetLang() {
+  const ov = document.getElementById('lang-overlay');
+  ov.style.display = 'flex';
+  ov.classList.remove('fade-out');
+  ov.style.opacity = '';
+  document.getElementById('app').classList.remove('visible');
+  document.getElementById('lang-switcher').style.display = 'none';
+}
+
+function tog(head) {
+  const body = head.nextElementSibling;
+  const open = body.classList.toggle('open');
+  head.classList.toggle('active', open);
+}
+
+function chk(li) {
+  li.classList.toggle('done');
+  const box = li.querySelector('.chk-box');
+  box.innerHTML = li.classList.contains('done') ? '<i class="ti ti-check" style="font-size:14px;color:#fff;"></i>' : '';
+}
+
+function copyWifi(btn, pass) {
+  navigator.clipboard.writeText(pass).then(() => {
+    const copied = btn._copiedText || 'Kopirano!';
+    btn.innerHTML = '<i class="ti ti-check"></i> ' + copied;
+    setTimeout(() => {
+      const lang = document.documentElement.lang || 'bs';
+      btn.innerHTML = '<i class="ti ti-copy"></i> ' + T[lang].copy;
+    }, 2500);
+  });
+}
+</script>
 </body>
 </html>
