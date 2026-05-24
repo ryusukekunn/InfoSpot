@@ -321,8 +321,8 @@
       </div>
       <div class="acc-body">
         <div class="row"><span class="row-label"><i class="ti ti-building"></i><span data-t="rest1"></span></span><span class="row-val">07:00&#8211;23:00</span></div>
-        <div class="row"><span class="row-label"><i class="ti ti-building"></i><span data-t="rest2"></span></span><span class="row-val">12:00&#8211;23:00</span></div>
-        <div class="row"><span class="row-label"><i class="ti ti-coffee"></i><span data-t="breakfast"></span></span><span class="row-val">07:30&#8211;10:30</span></div>
+        <div class="row"><span class="row-label"><i class="ti ti-coffee"></i><span data-t="breakfast"></span></span><span class="row-val">07:30&#8211;10:00</span></div>
+        <div class="row"><span class="row-label"><i class="ti ti-moon"></i><span data-t="dinner"></span></span><span class="row-val">18:00&#8211;20:30</span></div>
         <div class="row"><span class="row-label"><i class="ti ti-glass"></i><span data-t="poolBar"></span></span><span class="row-val">10:00&#8211;19:00</span></div>
         <div class="row"><span class="row-label"><i class="ti ti-coin"></i><span data-t="touristTax"></span></span><span class="row-val">2,00 KM/<span data-t="perPersonNight"></span></span></div>
       </div>
@@ -459,7 +459,7 @@ const T={
     jacuzziNote:"2 jacuzzija za relaksaciju",
     poolTip1:"Bazeni su otvoreni svaki dan od <strong>10:00 do 19:00</strong>. Preporu\u010dujemo dolazak ranije.",
     poolTip2:"Termomineralna voda poma\u017ee kod reumatizma, ki\u010dme, psorijaze, visokog pritiska i sinusa.",
-    spa1:"Finska sauna (suha)",spa2:"Parna sauna (hamam)",spa3:"Slana soba",
+    spa1:"Finska sauna (suha)",spa2:"Parno kupatilo",spa3:"Slana soba",
     spa4:"Relax masa\u017ea",spa5:"Medicinska masa\u017ea",spa6:"Sportska masa\u017ea",
     spa7:"Aquatherm tretman lica",spa8:"Power C & Eternal tretman",
     spaTip:"Masa\u017ee i tretmane potrebno je rezervisati unaprijed. Pozovite recepciju.",
@@ -467,7 +467,7 @@ const T={
     breakfast:"Doru\u010dak (buffet)",poolBar:"Bazen bar",touristTax:"Boravi\u0161na taksa",perPersonNight:"osobi/no\u0107i",
     roomTitle:"Informacije o sobi & hotelu",
     towels:"Ru\u010dnici za bazen",towelsVal:"Ne iznositi iz sobe",
-    ac:"Klima / grijanje",acVal:"Daljinski u sobi",
+    ac:"Klima / grijanje",acVal:"Termostat u sobi",
     parking:"Parking",parkingVal:"Besplatan, uz hotel",
     bikeRental:"Iznajmljivanje bicikla",bikeRentalVal:"Upit na recepciji",
     pets:"Ku\u0107ni ljubimci",petsVal:"Nisu dozvoljeni",
@@ -502,7 +502,7 @@ const T={
     jacuzziNote:"2 \u0111akuzija za relaksaciju",
     poolTip1:"Bazeni su otvoreni svaki dan od <strong>10:00 do 19:00</strong>. Preporu\u010dujemo dolazak ranije.",
     poolTip2:"Termomineralna voda poma\u017ee kod reumatizma, ki\u010dme, psorijaze, visokog pritiska i sinusa.",
-    spa1:"Finska sauna (suva)",spa2:"Parna sauna (hamam)",spa3:"Slana soba",
+    spa1:"Finska sauna (suva)",spa2:"Parno kupatilo",spa3:"Slana soba",
     spa4:"Relaks masa\u017ea",spa5:"Medicinska masa\u017ea",spa6:"Sportska masa\u017ea",
     spa7:"Aquatherm tretman lica",spa8:"Power C & Eternal tretman",
     spaTip:"Masa\u017ee i tretmane potrebno je rezervisati unapred. Pozovite recepciju.",
@@ -510,7 +510,7 @@ const T={
     breakfast:"Doru\u010dak (bife)",poolBar:"Bazen bar",touristTax:"Boravi\u0161na taksa",perPersonNight:"osobi/no\u0107i",
     roomTitle:"Informacije o sobi & hotelu",
     towels:"Pe\u0161kiri za bazen",towelsVal:"Ne iznositi iz sobe",
-    ac:"Klima / grejanje",acVal:"Daljinski u sobi",
+    ac:"Klima / grejanje",acVal:"Termostat u sobi",
     parking:"Parking",parkingVal:"Besplatan, uz hotel",
     bikeRental:"Iznajmljivanje bicikla",bikeRentalVal:"Upit na recepciji",
     pets:"Ku\u0107ni ljubimci",petsVal:"Nisu dozvoljeni",
@@ -545,7 +545,7 @@ const T={
     jacuzziNote:"2 jacuzzis for relaxation",
     poolTip1:"Pools are open every day from <strong>10:00 to 19:00</strong>. We recommend arriving early.",
     poolTip2:"Thermomineral water helps with rheumatism, spine, psoriasis, high blood pressure and sinus problems.",
-    spa1:"Finnish sauna (dry)",spa2:"Steam sauna (hammam)",spa3:"Salt room",
+    spa1:"Finnish sauna (dry)",spa2:"Steam bath",spa3:"Salt room",
     spa4:"Relaxation massage",spa5:"Medical massage",spa6:"Sports massage",
     spa7:"Aquatherm facial treatment",spa8:"Power C & Eternal treatment",
     spaTip:"Massages and treatments must be booked in advance. Please call reception.",
@@ -553,7 +553,7 @@ const T={
     breakfast:"Breakfast (buffet)",poolBar:"Pool bar",touristTax:"Tourist tax",perPersonNight:"person/night",
     roomTitle:"Room & hotel info",
     towels:"Pool towels",towelsVal:"Do not take out of room",
-    ac:"A/C & heating",acVal:"Remote control in room",
+    ac:"A/C & heating",acVal:"Thermostat in room",
     parking:"Parking",parkingVal:"Free, next to hotel",
     bikeRental:"Bike rental",bikeRentalVal:"Ask at reception",
     pets:"Pets",petsVal:"Not allowed",
@@ -588,7 +588,7 @@ const T={
     jacuzziNote:"2 Whirlpools zur Entspannung",
     poolTip1:"Die Pools sind t\u00e4glich von <strong>10:00 bis 19:00</strong> ge\u00f6ffnet. Fr\u00fchzeitige Ankunft empfohlen.",
     poolTip2:"Das Thermalwasser hilft bei Rheuma, R\u00fcckenproblemen, Psoriasis, Bluthochdruck und Nasennebenh\u00f6hlen.",
-    spa1:"Finnische Sauna (trocken)",spa2:"Dampfsauna (Hamam)",spa3:"Salzraum",
+    spa1:"Finnische Sauna (trocken)",spa2:"Dampfbad",spa3:"Salzraum",
     spa4:"Entspannungsmassage",spa5:"Medizinische Massage",spa6:"Sportmassage",
     spa7:"Aquatherm Gesichtsbehandlung",spa8:"Power C & Eternal Behandlung",
     spaTip:"Bitte Massagen und Behandlungen im Voraus reservieren. Rezeption kontaktieren.",
@@ -596,7 +596,7 @@ const T={
     breakfast:"Fr\u00fchst\u00fcck (Buffet)",poolBar:"Pool-Bar",touristTax:"Kurtaxe",perPersonNight:"Person/Nacht",
     roomTitle:"Zimmer & Hotel",
     towels:"Badehandt\u00fccher",towelsVal:"Nicht aus dem Zimmer",
-    ac:"Klima / Heizung",acVal:"Fernbedienung im Zimmer",
+    ac:"Klima / Heizung",acVal:"Thermostat im Zimmer",
     parking:"Parkplatz",parkingVal:"Kostenlos, neben dem Hotel",
     bikeRental:"Fahrradverleih",bikeRentalVal:"Anfrage an der Rezeption",
     pets:"Haustiere",petsVal:"Nicht erlaubt",
